@@ -21,7 +21,7 @@ import java.util.Optional;
 public class RetrieveSchedulesCommand extends HystrixCommand<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RetrieveSchedulesCommand.class);
-    private static final String SCHEDULES_PATH = "matches/football/v1/schedules";
+    private static final String SCHEDULES_PATH = "/matches/football/v1/schedules";
     private static final int TIMEOUT = 5000;
 
     private ServiceResolverService serviceResolverService;
@@ -40,6 +40,7 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
             return runPost(httpPost.get());
         }
 
+        LOGGER.info("elso szamu fallback.");
         return getFallback();
     }
 
@@ -56,11 +57,14 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
 
         try {
             CloseableHttpResponse response = client.execute(httpPost);
-            return EntityUtils.toString(response.getEntity());
+            String result = EntityUtils.toString(response.getEntity());
+            LOGGER.info("Successfully retrieved schedules from football-matches service.");
+            return result;
         } catch (IOException e) {
             LOGGER.error("Unable to run http post. ", e);
         }
 
+        LOGGER.info("masodik szamu fallback.");
         return getFallback();
     }
 

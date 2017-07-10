@@ -1,18 +1,19 @@
 package hu.bets.apigateway.command;
 
 import com.netflix.hystrix.HystrixCommand;
+import hu.bets.apigateway.service.ServiceResolverService;
 
 import java.util.Map;
 
 public class CommandFacade {
 
-    private Map<String, ? extends HystrixCommand<String>> commands;
+    private ServiceResolverService resolverService;
 
-    public CommandFacade(Map<String, ? extends HystrixCommand<String>> commands) {
-        this.commands = commands;
+    public CommandFacade(ServiceResolverService resolverService) {
+        this.resolverService = resolverService;
     }
 
     public HystrixCommand<String> getRetrieveSchedulesCommand() {
-        return commands.get("SCHEDULES");
+        return new RetrieveSchedulesCommand(resolverService);
     }
 }
