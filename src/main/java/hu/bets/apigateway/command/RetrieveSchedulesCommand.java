@@ -22,7 +22,7 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RetrieveSchedulesCommand.class);
     private static final String SCHEDULES_PATH = "/matches/football/v1/schedules";
-    private static final int TIMEOUT = 5000;
+    private static final int TIMEOUT = 10_000;
 
     private ServiceResolverService serviceResolverService;
 

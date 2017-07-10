@@ -33,7 +33,7 @@ public class Starter {
     private void setCommandTimeout() {
         ConfigurationManager.getConfigInstance().setProperty(
                 "hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds",
-                5000);
+                10000);
     }
 
     private static void addShutDownHook(ApplicationContext context) {
