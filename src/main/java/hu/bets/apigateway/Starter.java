@@ -4,6 +4,7 @@ import com.netflix.config.ConfigurationManager;
 import com.netflix.hystrix.HystrixCommandProperties;
 import hu.bets.apigateway.config.ApplicationConfig;
 import hu.bets.apigateway.config.WebConfig;
+import hu.bets.common.services.Services;
 import hu.bets.common.util.servicediscovery.EurekaFacade;
 import org.eclipse.jetty.server.Server;
 import org.slf4j.Logger;
@@ -22,8 +23,9 @@ public class Starter {
     public static void main(String[] args) {
         Starter starter = new Starter();
 
-//        starter.registerForDiscovery(starter.context.getBean(EurekaFacade.class));
-//        addShutDownHook(starter.context);
+        starter.registerForDiscovery(starter.context.getBean(EurekaFacade.class));
+        addShutDownHook(starter.context);
+
         starter.setCommandTimeout();
         starter.startServer(starter.context.getBean(Server.class));
     }
@@ -39,7 +41,7 @@ public class Starter {
     }
 
     private void registerForDiscovery(EurekaFacade eurekaFacade) {
-        eurekaFacade.registerNonBlockingly("Karamella");
+        eurekaFacade.registerNonBlockingly(Services.API_GATEWAY.getServiceName());
     }
 
     private void startServer(Server server) {
