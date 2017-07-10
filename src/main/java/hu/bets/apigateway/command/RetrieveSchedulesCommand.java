@@ -40,7 +40,6 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
             return runPost(httpPost.get());
         }
 
-        LOGGER.info("elso szamu fallback.");
         return getFallback();
     }
 
@@ -64,7 +63,6 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
             LOGGER.error("Unable to run http post. ", e);
         }
 
-        LOGGER.info("masodik szamu fallback.");
         return getFallback();
     }
 
