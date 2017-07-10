@@ -1,4 +1,4 @@
-package hu.bets.apigateway;
+package hu.bets;
 
 import com.netflix.config.ConfigurationManager;
 import com.netflix.hystrix.HystrixCommandProperties;
