@@ -68,7 +68,7 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
 
     @Override
     protected String getFallback() {
-        return "{\"error\": \"Unable to retrieve schedules.\"}";
+        return String.format("{\"matches\": [], \"token\":\"%s\",\"error\": \"Unable to retrieve schedules.\"}", "security-token-to-be-filled");
     }
 
     private String getFullEndpoint() {
@@ -79,7 +79,7 @@ public class RetrieveSchedulesCommand extends HystrixCommand<String> {
     private Optional<HttpPost> makePost(String fullEndpoint) {
         try {
             HttpPost request = new HttpPost(fullEndpoint);
-            HttpEntity entity = new StringEntity("\"error\":\"Unable retrieve schedules. Matches service may be down.\"");
+            HttpEntity entity = new StringEntity("\"token\":\"\"");
             request.setEntity(entity);
             return Optional.of(request);
         } catch (Exception e) {
