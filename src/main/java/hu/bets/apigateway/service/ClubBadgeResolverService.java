@@ -1,6 +1,8 @@
 package hu.bets.apigateway.service;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.JaroWinklerDistance;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,14 +50,14 @@ public class ClubBadgeResolverService {
         String result = "";
         double min = Integer.MAX_VALUE;
         for (String club : crestsMap.keySet()) {
-            int distance = StringUtils.getLevenshteinDistance(club, clubName);
+            int distance = LevenshteinDistance.getDefaultInstance().apply(club, clubName);
             if (distance < min) {
                 result = club;
                 min = distance;
             }
         }
 
-        if (StringUtils.getJaroWinklerDistance(clubName, result) > .60) {
+        if (new JaroWinklerDistance().apply(clubName, result) > .60) {
             return CREST_ADDRESS_PREFIX + crestsMap.get(result) + FILE_FORMAT;
         }
 
