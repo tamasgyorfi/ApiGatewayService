@@ -3,7 +3,7 @@ package hu.bets.apigateway.command;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.service.ServiceResolverService;
 
-import java.util.Map;
+import java.util.List;
 
 public class CommandFacade {
 
@@ -15,5 +15,9 @@ public class CommandFacade {
 
     public HystrixCommand<String> getRetrieveSchedulesCommand() {
         return new RetrieveSchedulesCommand(resolverService);
+    }
+
+    public HystrixCommand<String> getRetrieveBetsCommand(String userId, List<String> matchIds) {
+        return new RetrieveUserBetsCommand(resolverService, userId, matchIds);
     }
 }
