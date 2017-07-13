@@ -19,7 +19,7 @@ public class SchedulesServiceTest {
     private SchedulesService sut = new SchedulesService(null, badgeService) {
         @Override
         protected String getUserBets(String userId, List<String> matchIds) {
-            return "{\"error\":\"\",\"payload\":[{\"matchId\":\"match2\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match3\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match4\",\"homeTeamGoals\":1,\"awayTeamGoals\":0}]}";
+            return "{\"error\":\"some\",\"payload\":[{\"matchId\":\"match2\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match3\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match4\",\"homeTeamGoals\":1,\"awayTeamGoals\":0}]}";
         }
 
         @Override
