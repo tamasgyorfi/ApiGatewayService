@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,11 +39,7 @@ public class SchedulesServiceTest {
 
         schedulesResponse = new String(bytes);
 
-        badgeService = new ClubBadgeResolverService() {
-            @Override
-            protected void createFileSystem(URI uri) throws IOException {
-            }
-        };
+        badgeService = new ClubBadgeResolverService();
         badgeService.init();
     }
 

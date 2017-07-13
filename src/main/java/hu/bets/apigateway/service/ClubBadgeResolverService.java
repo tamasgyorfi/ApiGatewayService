@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -30,10 +27,8 @@ public class ClubBadgeResolverService {
     protected void init() {
 
         try {
-            URI uri = this.getClass().getClassLoader().getResource("crests.properties").toURI();
-            createFileSystem(uri);
-            Path path = Paths.get(uri);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), "UTF8"));
+            InputStream stream = this.getClass().getClassLoader().getResourceAsStream("crests.properties");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
             String line = "";
 
             while ((line = reader.readLine()) != null) {
@@ -45,12 +40,6 @@ public class ClubBadgeResolverService {
         }
 
         LOGGER.info("Initialized the crests map with {} entries.", crestsMap.size());
-    }
-
-    protected void createFileSystem(URI uri) throws IOException {
-        Map<String, String> env = new HashMap<>();
-        env.put("create", "true");
-        FileSystem zipfs = FileSystems.newFileSystem(uri, env);
     }
 
     public Map<String, String> resolveBadges(List<String> clubNames) {
