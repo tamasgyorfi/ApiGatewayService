@@ -1,9 +1,10 @@
 package hu.bets.apigateway.service;
 
-import com.google.gson.Gson;
 import com.jayway.jsonpath.Configuration;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
+import hu.bets.apigateway.model.Crests;
+import hu.bets.apigateway.model.Schedules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class SchedulesService {
         this.badgeResolverService = badgeResolverService;
     }
 
-    public String getAggregatetResult(String userId) {
+    public Schedules getAggregatetResult(String userId) {
 
         String schedulesJson = getSchedules();
         Object schedulesDoc = Configuration.defaultConfiguration().jsonProvider().parse(schedulesJson);
@@ -43,7 +44,7 @@ public class SchedulesService {
         Object userBetsDoc = Configuration.defaultConfiguration().jsonProvider().parse(userBetsJson);
         List<String> userBets = read(userBetsDoc, BET_PAYLOAD_PATH);
 
-        return new Gson().toJson(new Schedules(matches, userBets, new Crests(getClubBadges(teamNames), CREST_ADDRESS_PREFIX, FILE_FORMAT)));
+        return new Schedules(matches, userBets, new Crests(getClubBadges(teamNames), CREST_ADDRESS_PREFIX, FILE_FORMAT));
     }
 
     protected String getSchedules() {
@@ -67,30 +68,4 @@ public class SchedulesService {
     private Map<String, String> getClubBadges(List<String> clubNames) {
         return badgeResolverService.resolveBadges(clubNames);
     }
-
-    private static final class Schedules {
-        private final List<String> schedules;
-        private final List<String> bets;
-        private final Crests crests;
-
-        Schedules(List<String> schedules, List<String> bets, Crests crests) {
-            this.schedules = schedules;
-            this.bets = bets;
-            this.crests = crests;
-        }
-    }
-
-    private static class Crests {
-        private final Map<String, String> crests;
-        private final String baseUrl;
-        private final String format;
-
-        Crests(Map<String, String> crests, String baseUrl, String format) {
-
-            this.crests = crests;
-            this.baseUrl = baseUrl;
-            this.format = format;
-        }
-    }
-
 }

@@ -1,5 +1,6 @@
 package hu.bets.apigateway.service;
 
+import com.google.gson.Gson;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -46,6 +47,6 @@ public class SchedulesServiceTest {
         Path p = Paths.get(SchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
-        assertEquals(new String(bytes), sut.getAggregatetResult("user1"));
+        assertEquals(new String(bytes), new Gson().toJson(sut.getAggregatetResult("user1")));
     }
 }
