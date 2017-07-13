@@ -1,6 +1,5 @@
 package hu.bets.apigateway.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.slf4j.Logger;
@@ -19,14 +18,12 @@ import java.util.Map;
 public class ClubBadgeResolverService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClubBadgeResolverService.class);
-    private static final String CREST_ADDRESS_PREFIX = "https://raw.githubusercontent.com/toptipr/multimedia/master/crests/";
-    private static final String FILE_FORMAT = ".PNG";
     private static final String UNKNOWN_CREST_NAME = "99999";
 
     private final Map<String, String> crestsMap = new HashMap<>();
 
     @PostConstruct
-    private void init() {
+    protected void init() {
         try {
             Path path = Paths.get(this.getClass().getClassLoader().getResource("crests.properties").toURI());
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), "UTF8"));
@@ -43,7 +40,12 @@ public class ClubBadgeResolverService {
     }
 
     public Map<String, String> resolveBadges(List<String> clubNames) {
-        return null;
+        Map<String, String> retVal = new HashMap<>();
+        for (String club : clubNames) {
+            retVal.put(club, resolveBadge(club));
+        }
+
+        return retVal;
     }
 
     private String resolveBadge(String clubName) {
@@ -58,9 +60,9 @@ public class ClubBadgeResolverService {
         }
 
         if (new JaroWinklerDistance().apply(clubName, result) > .60) {
-            return CREST_ADDRESS_PREFIX + crestsMap.get(result) + FILE_FORMAT;
+            return crestsMap.get(result);
         }
 
-        return CREST_ADDRESS_PREFIX + UNKNOWN_CREST_NAME + FILE_FORMAT;
+        return UNKNOWN_CREST_NAME;
     }
 }
