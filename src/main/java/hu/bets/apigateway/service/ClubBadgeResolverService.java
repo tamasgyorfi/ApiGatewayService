@@ -8,7 +8,11 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -24,8 +28,11 @@ public class ClubBadgeResolverService {
 
     @PostConstruct
     protected void init() {
+
         try {
-            Path path = Paths.get(this.getClass().getClassLoader().getResource("crests.properties").toURI());
+            URI uri = this.getClass().getClassLoader().getResource("crests.properties").toURI();
+            createFileSystem(uri);
+            Path path = Paths.get(uri);
             BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path.toFile()), "UTF8"));
             String line = "";
 
@@ -37,6 +44,13 @@ public class ClubBadgeResolverService {
             LOGGER.info("Exception while trying to load club crest map. Crests may be unavailable. ", e);
         }
 
+        LOGGER.info("Initialized the crests map with {} entries.", crestsMap.size());
+    }
+
+    private void createFileSystem(URI uri) throws IOException {
+        Map<String, String> env = new HashMap<>();
+        env.put("create", "true");
+        FileSystem zipfs = FileSystems.newFileSystem(uri, env);
     }
 
     public Map<String, String> resolveBadges(List<String> clubNames) {
@@ -49,6 +63,7 @@ public class ClubBadgeResolverService {
     }
 
     private String resolveBadge(String clubName) {
+        LOGGER.info("Resolving crest for: {}", clubName);
         String result = "";
         double min = Integer.MAX_VALUE;
         for (String club : crestsMap.keySet()) {
