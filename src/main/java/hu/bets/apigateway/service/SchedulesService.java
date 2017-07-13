@@ -35,6 +35,7 @@ public class SchedulesService {
     public Schedules getAggregatetResult(String userId) {
 
         String schedulesJson = getSchedules();
+        LOGGER.info("Schedules received: {}", schedulesJson);
         Object schedulesDoc = Configuration.defaultConfiguration().jsonProvider().parse(schedulesJson);
         List<String> matches = read(schedulesDoc, MATCHES_PATH);
         List<String> matchIds = read(schedulesDoc, MATCH_IDS_PATH);
@@ -42,6 +43,7 @@ public class SchedulesService {
 
         String userBetsJson = getUserBets(userId, matchIds);
         Object userBetsDoc = Configuration.defaultConfiguration().jsonProvider().parse(userBetsJson);
+        LOGGER.info("Bets received: {}", userBetsJson);
         List<String> userBets = read(userBetsDoc, BET_PAYLOAD_PATH);
 
         return new Schedules(matches, userBets, new Crests(getClubBadges(teamNames), CREST_ADDRESS_PREFIX, FILE_FORMAT));

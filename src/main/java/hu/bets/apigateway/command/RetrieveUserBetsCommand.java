@@ -6,6 +6,7 @@ import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.service.ServiceResolverService;
 import hu.bets.common.services.Services;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -79,6 +80,7 @@ public class RetrieveUserBetsCommand extends HystrixCommand<String> {
 
     private String getFullEndpoint() {
         String endpoint = serviceResolverService.resolve(Services.BETS);
+        LOGGER.info("PATH is: {}", endpoint + USER_BETS_PATH);
         return endpoint + USER_BETS_PATH;
     }
 
@@ -87,6 +89,7 @@ public class RetrieveUserBetsCommand extends HystrixCommand<String> {
             HttpPost request = new HttpPost(fullEndpoint);
             HttpEntity entity = new StringEntity(new Gson().toJson(new UserBetsRequest(userId, matchIds, "token-to-be-filled")));
             request.setEntity(entity);
+            request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
             return Optional.of(request);
         } catch (Exception e) {
             LOGGER.info("Exception while trying to build post request to retrieve bets. {}", e);
@@ -97,12 +100,12 @@ public class RetrieveUserBetsCommand extends HystrixCommand<String> {
 
     private static class UserBetsRequest {
         private String userId;
-        private List<String> matchIds;
+        private List<String> ids;
         private String token;
 
-        public UserBetsRequest(String userId, List<String> matchIds, String token) {
+        public UserBetsRequest(String userId, List<String> ids, String token) {
             this.userId = userId;
-            this.matchIds = matchIds;
+            this.ids = ids;
             this.token = token;
         }
 

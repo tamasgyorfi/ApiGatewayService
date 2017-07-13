@@ -1,6 +1,7 @@
 package hu.bets.apigateway.service;
 
 import com.google.gson.Gson;
+import hu.bets.apigateway.web.model.SchedulesRequest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
