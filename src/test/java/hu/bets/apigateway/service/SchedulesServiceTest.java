@@ -1,11 +1,11 @@
 package hu.bets.apigateway.service;
 
 import com.google.gson.Gson;
-import hu.bets.apigateway.web.model.SchedulesRequest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +27,7 @@ public class SchedulesServiceTest {
         protected String getSchedules() {
             return schedulesResponse;
         }
+
     };
 
     private static String schedulesResponse = "";
@@ -39,7 +40,11 @@ public class SchedulesServiceTest {
 
         schedulesResponse = new String(bytes);
 
-        badgeService = new ClubBadgeResolverService();
+        badgeService = new ClubBadgeResolverService() {
+            @Override
+            protected void createFileSystem(URI uri) throws IOException {
+            }
+        };
         badgeService.init();
     }
 

@@ -47,7 +47,7 @@ public class ClubBadgeResolverService {
         LOGGER.info("Initialized the crests map with {} entries.", crestsMap.size());
     }
 
-    private void createFileSystem(URI uri) throws IOException {
+    protected void createFileSystem(URI uri) throws IOException {
         Map<String, String> env = new HashMap<>();
         env.put("create", "true");
         FileSystem zipfs = FileSystems.newFileSystem(uri, env);
