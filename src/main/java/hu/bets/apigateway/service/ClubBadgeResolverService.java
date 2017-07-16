@@ -6,12 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.net.URI;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +48,7 @@ public class ClubBadgeResolverService {
         return retVal;
     }
 
-    private String resolveBadge(String clubName) {
+    protected String resolveBadge(String clubName) {
         LOGGER.info("Resolving crest for: {}", clubName);
         String result = "";
         double min = Integer.MAX_VALUE;
@@ -60,6 +57,7 @@ public class ClubBadgeResolverService {
             if (distance < min) {
                 result = club;
                 min = distance;
+                LOGGER.info("New best match found: {}", result);
             }
         }
 

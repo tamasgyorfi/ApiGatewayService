@@ -1,6 +1,5 @@
 package hu.bets.apigateway.service;
 
-import com.google.common.collect.Lists;
 import com.jayway.jsonpath.Configuration;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
@@ -36,14 +35,14 @@ public class SchedulesService {
         this.badgeResolverService = badgeResolverService;
     }
 
-    public Schedules getAggregatetResult(String userId) {
+    public Schedules getAggregatedResult(String userId) {
 
-        List<String> matches = null;
-        List<String> matchIds = null;
-        List<String> teamNames = null;
+        List<String> matches;
+        List<String> matchIds;
+        List<String> teamNames;
         List<String> userBets = null;
-        String schedulesError = null;
-        String betsError = null;
+        String schedulesError;
+        String betsError;
 
         try {
             String schedulesJson = getSchedules();

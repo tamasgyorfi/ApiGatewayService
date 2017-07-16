@@ -37,7 +37,7 @@ public class SchedulesResource {
         SchedulesRequest schedulesRequest = new Gson().fromJson(payload, SchedulesRequest.class);
         LOGGER.info("Extracted userId is: {}", schedulesRequest.getUserId());
 
-        Schedules retVal = schedulesService.getAggregatetResult(schedulesRequest.getUserId());
+        Schedules retVal = schedulesService.getAggregatedResult(schedulesRequest.getUserId());
         String resultingJson = new Gson().toJson(retVal);
         LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
 
