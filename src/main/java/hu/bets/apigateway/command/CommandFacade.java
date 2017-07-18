@@ -20,4 +20,8 @@ public class CommandFacade {
     public HystrixCommand<String> getRetrieveBetsCommand(String userId, List<String> matchIds) {
         return new RetrieveUserBetsCommand(resolverService, userId, matchIds);
     }
+
+    public HystrixCommand<String> sendUserBets(String payload) {
+        return new SendUserBetsCommand(resolverService, payload);
+    }
 }

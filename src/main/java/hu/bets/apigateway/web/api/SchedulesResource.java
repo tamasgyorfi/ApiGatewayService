@@ -2,7 +2,7 @@ package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
 import hu.bets.apigateway.model.Schedules;
-import hu.bets.apigateway.service.DefaultSchedulesService;
+import hu.bets.apigateway.service.SchedulesService;
 import hu.bets.apigateway.web.model.SchedulesRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +17,10 @@ import javax.ws.rs.core.MediaType;
 public class SchedulesResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulesResource.class);
+    private static final Gson GSON = new Gson();
 
     @Autowired
-    private DefaultSchedulesService defaultSchedulesService;
+    private SchedulesService defaultSchedulesService;
 
     @Path("info")
     @GET
@@ -34,11 +35,11 @@ public class SchedulesResource {
     @POST
     public String getSchedules(String payload) {
         LOGGER.info("Incoming request for schedules {}.", payload);
-        SchedulesRequest schedulesRequest = new Gson().fromJson(payload, SchedulesRequest.class);
+        SchedulesRequest schedulesRequest = GSON.fromJson(payload, SchedulesRequest.class);
         LOGGER.info("Extracted userId is: {}", schedulesRequest.getUserId());
 
         Schedules retVal = defaultSchedulesService.getAggregatedResult(schedulesRequest.getUserId());
-        String resultingJson = new Gson().toJson(retVal);
+        String resultingJson = GSON.toJson(retVal);
         LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
 
         return resultingJson;
