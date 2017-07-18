@@ -13,20 +13,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClubBadgeResolverService {
+public class ClubBadgeResolverService implements BadgeResolverService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClubBadgeResolverService.class);
     private static final String UNKNOWN_CREST_NAME = "99999";
+    private static final double DISTANCE_THRESHOLD = .60;
 
     private final Map<String, String> crestsMap = new HashMap<>();
 
     @PostConstruct
-    protected void init() {
+    void init() {
 
         try {
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream("crests.properties");
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF8"));
-            String line = "";
+            String line;
 
             while ((line = reader.readLine()) != null) {
                 String[] split = line.split("=");
@@ -39,6 +40,7 @@ public class ClubBadgeResolverService {
         LOGGER.info("Initialized the crests map with {} entries.", crestsMap.size());
     }
 
+    @Override
     public Map<String, String> resolveBadges(List<String> clubNames) {
         Map<String, String> retVal = new HashMap<>();
         for (String club : clubNames) {
@@ -48,7 +50,7 @@ public class ClubBadgeResolverService {
         return retVal;
     }
 
-    protected String resolveBadge(String clubName) {
+    String resolveBadge(String clubName) {
         LOGGER.info("Resolving crest for: {}", clubName);
         String result = "";
         double min = Integer.MAX_VALUE;
@@ -61,7 +63,10 @@ public class ClubBadgeResolverService {
             }
         }
 
-        if (new JaroWinklerDistance().apply(clubName, result) > .60) {
+        Double res = new JaroWinklerDistance().apply(clubName, result);
+        LOGGER.info("Best match is {}, L distance is {}, J distance is {}", result, min, res);
+
+        if (res > DISTANCE_THRESHOLD) {
             return crestsMap.get(result);
         }
 

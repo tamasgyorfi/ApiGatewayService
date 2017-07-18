@@ -10,22 +10,23 @@ import static org.junit.Assert.assertEquals;
 
 public class ClubBadgeResolverServiceTest {
 
-    public static final String REAL_MADRID = "Real Madrid";
-    public static final String FC_BASEL = "FC Basel";
-    public static final String GALATASARAY = "Galatasaray";
-    public static final String PARMA_FC = "Parma FC";
-    public static final String FERENCVAROSI_TC = "Ferencvarosi TC";
-    public static final String MACCABI_HAIFA = "Maccabi Haifa";
-    public static final String LA_PAZ_FC = "La Paz FC";
-    public static final String ALIANZA_FC = "Alianza FC";
-    public static final String TAURO_FC = "Tauro FC";
-    public static final String AL_JAZIRA_CLUB = "Al Jazira Club";
-    public static final String STANDARD_FK = "Standard FK";
-    public static final String ATLANTA = "Atlanta";
-    public static final String SINGAPORE_ARMED_FORCES_FC = "Singapore Armed Forces FC";
-    public static final String TEMA_YOUTH = "Tema Youth";
-    public static final String DOXA_DAPAMAS = "Doxa Dapamas";
-    public static final String PUSKAS_AKADEMIA = "Puskas Akademia";
+    private static final String REAL_MADRID = "Real Madrid";
+    private static final String FC_BASEL = "FC Basel";
+    private static final String GALATASARAY = "Galatasaray";
+    private static final String PARMA_FC = "Parma FC";
+    private static final String FERENCVAROSI_TC = "Ferencvarosi TC";
+    private static final String MACCABI_HAIFA = "Maccabi Haifa";
+    private static final String LA_PAZ_FC = "La Paz FC";
+    private static final String ALIANZA_FC = "Alianza FC";
+    private static final String TAURO_FC = "Tauro FC";
+    private static final String AL_JAZIRA_CLUB = "Al Jazira Club";
+    private static final String STANDARD_FK = "Standard FK";
+    private static final String ATLANTA = "Atlanta";
+    private static final String SINGAPORE_ARMED_FORCES_FC = "Armed Forces FC";
+    private static final String TEMA_YOUTH = "Tema Youth";
+    private static final String DOXA_DAPAMAS = "Doxa Dapamas";
+    private static final String PUSKAS_AKADEMIA = "Puskas Akademia";
+
     private ClubBadgeResolverService sut = new ClubBadgeResolverService();
 
     @Before
@@ -77,5 +78,10 @@ public class ClubBadgeResolverServiceTest {
         assertEquals("1525", sut.resolveBadge(TEMA_YOUTH));
         assertEquals("1605", sut.resolveBadge(DOXA_DAPAMAS));
         assertEquals("99999", sut.resolveBadge(PUSKAS_AKADEMIA));
+    }
+
+    @Test
+    public void vasas() {
+        sut.resolveBadge("FC Astana");
     }
 }

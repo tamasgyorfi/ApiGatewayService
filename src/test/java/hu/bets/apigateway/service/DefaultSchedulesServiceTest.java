@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SchedulesServiceTest {
+public class DefaultSchedulesServiceTest {
 
     private static final String BETS_RESPONSE = "{\"error\":\"some\",\"payload\":[{\"matchId\":\"match2\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match3\",\"homeTeamGoals\":1,\"awayTeamGoals\":0},{\"matchId\":\"match4\",\"homeTeamGoals\":1,\"awayTeamGoals\":0}]}";
 
@@ -34,11 +34,11 @@ public class SchedulesServiceTest {
     private HystrixCommand<String> schedulesCommand;
     @Mock
     private HystrixCommand<String> betsCommand;
-    private SchedulesService sut;
+    private DefaultSchedulesService sut;
 
     @Before
     public void before() {
-        sut = new SchedulesService(commandFacade, badgeService);
+        sut = new DefaultSchedulesService(commandFacade, badgeService);
 
         when(commandFacade.getRetrieveSchedulesCommand()).thenReturn(schedulesCommand);
         when(commandFacade.getRetrieveBetsCommand(eq("user1"), any(List.class))).thenReturn(betsCommand);
@@ -52,7 +52,7 @@ public class SchedulesServiceTest {
 
     @BeforeClass
     public static void beforeClass() throws IOException, URISyntaxException {
-        Path p = Paths.get(SchedulesServiceTest.class.getClassLoader().getResource("schedules.response.json").toURI());
+        Path p = Paths.get(DefaultSchedulesServiceTest.class.getClassLoader().getResource("schedules.response.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
         schedulesResponse = new String(bytes);
@@ -63,7 +63,7 @@ public class SchedulesServiceTest {
 
     @Test
     public void shouldCorrectlyGenerateResultingPayload() throws URISyntaxException, IOException {
-        Path p = Paths.get(SchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
+        Path p = Paths.get(DefaultSchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
         assertEquals(new String(bytes), new Gson().toJson(sut.getAggregatedResult("user1")));
@@ -74,7 +74,7 @@ public class SchedulesServiceTest {
 
         when(schedulesCommand.execute()).thenThrow(new IllegalArgumentException("error"));
 
-        Path p = Paths.get(SchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
+        Path p = Paths.get(DefaultSchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
         assertEquals("{\"schedules\":[],\"bets\":[],\"crests\":{},\"errors\":[\"error\"]}", new Gson().toJson(sut.getAggregatedResult("user1")));
