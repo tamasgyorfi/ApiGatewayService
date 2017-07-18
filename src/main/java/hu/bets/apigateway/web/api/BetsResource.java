@@ -1,6 +1,7 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
+import hu.bets.apigateway.model.UserBet;
 import hu.bets.apigateway.service.BetsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,12 @@ public class BetsResource {
         LOGGER.info("Incoming user bets received: {}", payload);
         try {
             LOGGER.info("User bets successfully sent to Best-Service.");
-            return betsService.sendBetsToBetService(payload);
+            UserBet response = GSON.fromJson(payload, UserBet.class);
+
+            return betsService.sendBetsToBetService(response);
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
-            return "";
+            return "{\"id\":\"\", \"error\": \"Unable to send user bets to the Bets-Service.\"";
         }
     }
 }

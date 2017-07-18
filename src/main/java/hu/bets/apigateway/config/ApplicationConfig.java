@@ -1,10 +1,7 @@
 package hu.bets.apigateway.config;
 
 import hu.bets.apigateway.command.CommandFacade;
-import hu.bets.apigateway.service.ClubBadgeResolverService;
-import hu.bets.apigateway.service.DefaultSchedulesService;
-import hu.bets.apigateway.service.SchedulesService;
-import hu.bets.apigateway.service.ServiceResolverService;
+import hu.bets.apigateway.service.*;
 import hu.bets.common.util.servicediscovery.DefaultEurekaFacade;
 import hu.bets.common.util.servicediscovery.EurekaFacade;
 import org.springframework.context.annotation.Bean;
@@ -35,5 +32,10 @@ public class ApplicationConfig {
     @Bean
     public SchedulesService schedulesService(CommandFacade commandFacade, ClubBadgeResolverService badgeResolverService) {
         return new DefaultSchedulesService(commandFacade, badgeResolverService);
+    }
+
+    @Bean
+    public BetsService betsService(CommandFacade commandFacade) {
+        return new DefaultBetsService(commandFacade);
     }
 }

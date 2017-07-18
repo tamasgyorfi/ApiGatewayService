@@ -1,6 +1,7 @@
 package hu.bets.apigateway.command;
 
 import com.netflix.hystrix.HystrixCommand;
+import hu.bets.apigateway.model.UserBet;
 import hu.bets.apigateway.service.ServiceResolverService;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class CommandFacade {
         return new RetrieveUserBetsCommand(resolverService, userId, matchIds);
     }
 
-    public HystrixCommand<String> sendUserBets(String payload) {
+    public HystrixCommand<String> sendUserBets(UserBet payload) {
         return new SendUserBetsCommand(resolverService, payload);
     }
 }
