@@ -1,6 +1,7 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
+import hu.bets.apigateway.model.ScheduleServiceErrorResponse;
 import hu.bets.apigateway.model.Schedules;
 import hu.bets.apigateway.service.SchedulesService;
 import hu.bets.apigateway.web.model.SchedulesRequest;
@@ -34,15 +35,19 @@ public class SchedulesResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
     public String getSchedules(String payload) {
-        LOGGER.info("Incoming request for schedules {}.", payload);
-        SchedulesRequest schedulesRequest = GSON.fromJson(payload, SchedulesRequest.class);
-        LOGGER.info("Extracted userId is: {}", schedulesRequest.getUserId());
+        try {
+            LOGGER.info("Incoming request for schedules {}.", payload);
+            SchedulesRequest schedulesRequest = GSON.fromJson(payload, SchedulesRequest.class);
+            LOGGER.info("Extracted userId is: {}", schedulesRequest.getUserId());
 
-        Schedules retVal = defaultSchedulesService.getAggregatedResult(schedulesRequest.getUserId());
-        String resultingJson = GSON.toJson(retVal);
-        LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
+            Schedules retVal = defaultSchedulesService.getAggregatedResult(schedulesRequest.getUserId());
+            String resultingJson = GSON.toJson(retVal);
+            LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
 
-        return resultingJson;
+            return resultingJson;
+        } catch (Exception e) {
+            return GSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules. " + e.getMessage(), ""));
+        }
     }
 
 

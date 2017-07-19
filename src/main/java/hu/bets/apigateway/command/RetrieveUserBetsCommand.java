@@ -2,6 +2,7 @@ package hu.bets.apigateway.command;
 
 import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommandGroupKey;
+import hu.bets.apigateway.model.BetServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
 import hu.bets.common.services.Services;
 import org.apache.http.client.methods.HttpPost;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 public class RetrieveUserBetsCommand extends CommandBase {
 
+    private static final Gson GSON = new Gson();
     private static final Logger LOGGER = LoggerFactory.getLogger(RetrieveSchedulesCommand.class);
     private static final String USER_BETS_PATH = "/bets/football/v1/userBets";
 
@@ -38,12 +40,12 @@ public class RetrieveUserBetsCommand extends CommandBase {
     }
 
     private String buildPayload() {
-        return new Gson().toJson(new UserBetsRequest(userId, matchIds, "token-to-be-filled"));
+        return GSON.toJson(new UserBetsRequest(userId, matchIds, "token-to-be-filled"));
     }
 
     @Override
     protected String getFallback() {
-        return String.format("{\"payload\": [], \"token\":\"%s\",\"error\": \"Unable to retrieve user bets.\"}", "security-token-to-be-filled");
+        return GSON.toJson(new BetServiceErrorResponse("Unable to retrieve user bets.", "security-token-to-be-filled"));
     }
 
     private static class UserBetsRequest {

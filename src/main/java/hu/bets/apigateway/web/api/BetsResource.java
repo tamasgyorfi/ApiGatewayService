@@ -1,6 +1,7 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
+import hu.bets.apigateway.model.BetServiceErrorResponse;
 import hu.bets.apigateway.model.UserBet;
 import hu.bets.apigateway.service.BetsService;
 import org.slf4j.Logger;
@@ -37,7 +38,7 @@ public class BetsResource {
             return betsService.sendBetsToBetService(response);
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
-            return "{\"id\":\"\", \"error\": \"Unable to send user bets to the Bets-Service.\"";
+            return GSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
         }
     }
 }
