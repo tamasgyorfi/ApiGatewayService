@@ -19,25 +19,25 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Optional;
 
-public abstract class CommandBase extends HystrixCommand<String> {
+abstract class CommandBase extends HystrixCommand<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendUserBetsCommand.class);
     private static final int TIMEOUT = 10_000;
     private final ServiceResolverService resolverService;
 
 
-    protected CommandBase(HystrixCommandGroupKey group, ServiceResolverService resolverService) {
+    CommandBase(HystrixCommandGroupKey group, ServiceResolverService resolverService) {
         super(group);
         this.resolverService = resolverService;
     }
 
-    protected String getFullEndpoint(Services service, String path) {
+    String getFullEndpoint(Services service, String path) {
         String endpoint = resolverService.resolve(service);
         LOGGER.info("PATH is: {}", endpoint + path);
         return endpoint + path;
     }
 
-    protected Optional<HttpPost> makePost(String fullEndpoint, String payload) {
+    Optional<HttpPost> makePost(String fullEndpoint, String payload) {
         try {
             HttpPost request = new HttpPost(fullEndpoint);
             HttpEntity entity = new StringEntity(payload);
@@ -51,7 +51,7 @@ public abstract class CommandBase extends HystrixCommand<String> {
         return Optional.empty();
     }
 
-    protected String runPost(HttpPost httpPost) {
+    String runPost(HttpPost httpPost) {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(TIMEOUT)
                 .setConnectionRequestTimeout(TIMEOUT)
