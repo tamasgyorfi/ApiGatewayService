@@ -1,5 +1,7 @@
 package hu.bets.apigateway.config;
 
+import hu.bets.apigateway.service.BetsService;
+import hu.bets.apigateway.service.SchedulesService;
 import hu.bets.apigateway.web.api.BetsResource;
 import hu.bets.apigateway.web.api.SchedulesResource;
 import hu.bets.common.config.CommonWebConfig;
@@ -20,12 +22,12 @@ public class WebConfig {
     }
 
     @Bean
-    public SchedulesResource footballBetResource() {
-        return new SchedulesResource();
+    public SchedulesResource footballBetResource(SchedulesService schedulesService) {
+        return new SchedulesResource(schedulesService);
     }
 
     @Bean
-    public BetsResource betsResource() {
-        return new BetsResource();
+    public BetsResource betsResource(BetsService betsService) {
+        return new BetsResource(betsService);
     }
 }

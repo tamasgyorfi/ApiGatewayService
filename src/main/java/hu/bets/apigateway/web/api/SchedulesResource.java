@@ -20,8 +20,11 @@ public class SchedulesResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(SchedulesResource.class);
     private static final Gson GSON = new Gson();
 
-    @Autowired
     private SchedulesService defaultSchedulesService;
+
+    public SchedulesResource(SchedulesService defaultSchedulesService) {
+        this.defaultSchedulesService = defaultSchedulesService;
+    }
 
     @Path("info")
     @GET

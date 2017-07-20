@@ -6,7 +6,6 @@ import hu.bets.apigateway.model.UserBet;
 import hu.bets.apigateway.service.BetsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.Consumes;
@@ -22,8 +21,11 @@ public class BetsResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(BetsResource.class);
     private static final Gson GSON = new Gson();
 
-    @Autowired
-    private BetsService betsService;
+    private final BetsService betsService;
+
+    public BetsResource(BetsService betsService) {
+        this.betsService = betsService;
+    }
 
     @Path("userBets")
     @Produces(MediaType.APPLICATION_JSON)

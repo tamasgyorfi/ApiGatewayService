@@ -79,9 +79,4 @@ public class ClubBadgeResolverServiceTest {
         assertEquals("1605", sut.resolveBadge(DOXA_DAPAMAS));
         assertEquals("99999", sut.resolveBadge(PUSKAS_AKADEMIA));
     }
-
-    @Test
-    public void vasas() {
-        sut.resolveBadge("FC Astana");
-    }
 }
