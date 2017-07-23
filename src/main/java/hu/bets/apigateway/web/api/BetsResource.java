@@ -34,9 +34,8 @@ public class BetsResource {
     public String sendBets(String payload) {
         LOGGER.info("Incoming user bets received: {}", payload);
         try {
-            LOGGER.info("User bets successfully sent to Best-Service.");
             UserBet response = GSON.fromJson(payload, UserBet.class);
-
+            LOGGER.info("User bets successfully sent to Best-Service. Result vasw: {}", response);
             return betsService.sendBetsToBetService(response);
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
