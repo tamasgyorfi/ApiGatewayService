@@ -1,6 +1,6 @@
-package hu.bets.apigateway.service;
+package hu.bets.apigateway.service.bets;
 
-import hu.bets.apigateway.model.UserBet;
+import hu.bets.apigateway.model.bets.UserBet;
 
 public interface BetsService {
 

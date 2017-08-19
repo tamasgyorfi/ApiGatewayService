@@ -1,7 +1,7 @@
 package hu.bets.apigateway.service;
 
-import hu.bets.common.services.Services;
-import hu.bets.common.util.servicediscovery.EurekaFacade;
+import hu.bets.servicediscovery.EurekaFacade;
+import hu.bets.services.Services;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

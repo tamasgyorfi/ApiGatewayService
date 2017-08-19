@@ -1,7 +1,7 @@
 package hu.bets.apigateway.web.api;
 
-import hu.bets.apigateway.model.Schedules;
-import hu.bets.apigateway.service.SchedulesService;
+import hu.bets.apigateway.model.schedules.Schedules;
+import hu.bets.apigateway.service.schedules.SchedulesService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

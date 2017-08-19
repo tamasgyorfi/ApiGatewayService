@@ -1,12 +1,12 @@
-package hu.bets.apigateway.command;
+package hu.bets.apigateway.command.schedules;
 
 import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommandGroupKey;
-import hu.bets.apigateway.model.BetServiceErrorResponse;
-import hu.bets.apigateway.model.ScheduleServiceErrorResponse;
+import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.util.RequestRunner;
+import hu.bets.apigateway.model.schedules.ScheduleServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
-import hu.bets.common.services.Services;
-import org.apache.http.client.methods.HttpPost;
+import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,17 +19,17 @@ public class RetrieveSchedulesCommand extends CommandBase {
     private static final String SCHEDULES_PATH = "/matches/football/v1/schedules";
     private static final String TOKEN = "to-be-filled";
 
-    RetrieveSchedulesCommand(ServiceResolverService serviceResolverService) {
+    public RetrieveSchedulesCommand(ServiceResolverService serviceResolverService) {
         super(HystrixCommandGroupKey.Factory.asKey("SCHEDULES"), serviceResolverService);
     }
 
     @Override
     protected String run() throws Exception {
         String fullEndpoint = getFullEndpoint(Services.MATCHES, SCHEDULES_PATH);
-        Optional<HttpPost> httpPost = makePost(fullEndpoint, buildPayload());
-        if (httpPost.isPresent()) {
-            LOGGER.info("Running http post to retrieve schedules.");
-            return runPost(httpPost.get());
+        Optional<String> result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
+        if (result.isPresent()) {
+            LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result.get());
+            return result.get();
         }
 
         return getFallback();

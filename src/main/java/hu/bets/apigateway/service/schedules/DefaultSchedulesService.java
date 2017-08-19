@@ -1,10 +1,10 @@
-package hu.bets.apigateway.service;
+package hu.bets.apigateway.service.schedules;
 
 import com.jayway.jsonpath.Configuration;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
-import hu.bets.apigateway.model.Crests;
-import hu.bets.apigateway.model.Schedules;
+import hu.bets.apigateway.model.schedules.Crests;
+import hu.bets.apigateway.model.schedules.Schedules;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

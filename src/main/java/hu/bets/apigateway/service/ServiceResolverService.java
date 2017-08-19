@@ -1,7 +1,8 @@
 package hu.bets.apigateway.service;
 
-import hu.bets.common.services.Services;
-import hu.bets.common.util.servicediscovery.EurekaFacade;
+
+import hu.bets.servicediscovery.EurekaFacade;
+import hu.bets.services.Services;
 
 public class ServiceResolverService {
 

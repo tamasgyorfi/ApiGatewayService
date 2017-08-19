@@ -1,4 +1,4 @@
-package hu.bets.apigateway.web.model;
+package hu.bets.apigateway.web.model.schedules;
 
 public class SchedulesRequest {
     private String userId;

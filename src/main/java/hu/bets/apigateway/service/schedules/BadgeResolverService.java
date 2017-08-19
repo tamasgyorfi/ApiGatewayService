@@ -1,4 +1,4 @@
-package hu.bets.apigateway.service;
+package hu.bets.apigateway.service.schedules;
 
 import java.util.List;
 import java.util.Map;

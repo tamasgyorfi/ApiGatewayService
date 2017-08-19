@@ -1,9 +1,9 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
-import hu.bets.apigateway.model.BetServiceErrorResponse;
-import hu.bets.apigateway.model.UserBet;
-import hu.bets.apigateway.service.BetsService;
+import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
+import hu.bets.apigateway.model.bets.UserBet;
+import hu.bets.apigateway.service.bets.BetsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -35,7 +35,7 @@ public class BetsResource {
         LOGGER.info("Incoming user bets received: {}", payload);
         try {
             UserBet response = GSON.fromJson(payload, UserBet.class);
-            LOGGER.info("User bets successfully sent to Best-Service. Result vasw: {}", response);
+            LOGGER.info("User bets successfully sent to Best-Service. Result was: {}", response);
             return betsService.sendBetsToBetService(response);
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);

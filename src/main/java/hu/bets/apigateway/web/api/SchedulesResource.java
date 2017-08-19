@@ -1,13 +1,12 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.gson.Gson;
-import hu.bets.apigateway.model.ScheduleServiceErrorResponse;
-import hu.bets.apigateway.model.Schedules;
-import hu.bets.apigateway.service.SchedulesService;
-import hu.bets.apigateway.web.model.SchedulesRequest;
+import hu.bets.apigateway.model.schedules.ScheduleServiceErrorResponse;
+import hu.bets.apigateway.model.schedules.Schedules;
+import hu.bets.apigateway.service.schedules.SchedulesService;
+import hu.bets.apigateway.web.model.schedules.SchedulesRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;

@@ -3,6 +3,8 @@ package hu.bets.apigateway.service;
 import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
+import hu.bets.apigateway.service.schedules.ClubBadgeResolverService;
+import hu.bets.apigateway.service.schedules.DefaultSchedulesService;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

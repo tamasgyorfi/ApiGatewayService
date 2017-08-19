@@ -1,9 +1,17 @@
 package hu.bets.apigateway.config;
 
 import hu.bets.apigateway.command.CommandFacade;
-import hu.bets.apigateway.service.*;
-import hu.bets.common.util.servicediscovery.DefaultEurekaFacade;
-import hu.bets.common.util.servicediscovery.EurekaFacade;
+import hu.bets.apigateway.service.ServiceResolverService;
+import hu.bets.apigateway.service.bets.BetsService;
+import hu.bets.apigateway.service.bets.DefaultBetsService;
+import hu.bets.apigateway.service.schedules.ClubBadgeResolverService;
+import hu.bets.apigateway.service.schedules.DefaultSchedulesService;
+import hu.bets.apigateway.service.schedules.SchedulesService;
+import hu.bets.apigateway.service.users.DefaultUsersService;
+import hu.bets.apigateway.service.users.UsersService;
+import hu.bets.common.util.EnvironmentVarResolver;
+import hu.bets.servicediscovery.EurekaFacade;
+import hu.bets.servicediscovery.EurekaFacadeImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +19,9 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
     @Bean
     public EurekaFacade eurekaFacade() {
-        return new DefaultEurekaFacade();
+        return new EurekaFacadeImpl(EnvironmentVarResolver.getEnvVar("EUREKA_URL", () -> {
+            throw new IllegalStateException();
+        }));
     }
 
     @Bean
@@ -37,5 +47,10 @@ public class ApplicationConfig {
     @Bean
     public BetsService betsService(CommandFacade commandFacade) {
         return new DefaultBetsService(commandFacade);
+    }
+
+    @Bean
+    public UsersService usersService(CommandFacade commandFacade) {
+        return new DefaultUsersService(commandFacade);
     }
 }

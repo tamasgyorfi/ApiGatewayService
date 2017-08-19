@@ -2,7 +2,8 @@ package hu.bets.apigateway.service;
 
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
-import hu.bets.apigateway.model.UserBet;
+import hu.bets.apigateway.model.bets.UserBet;
+import hu.bets.apigateway.service.bets.DefaultBetsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +31,9 @@ public class DefaultBetsServiceTest {
 
     @Test
     public void sendBetsToBetServiceShouldDelegateCallToCommandFacade() {
-        when(commandFacade.sendUserBets(userBet)).thenReturn(command);
+        when(commandFacade.getSendUserBetsCommand(userBet)).thenReturn(command);
         sut.sendBetsToBetService(userBet);
 
-        verify(commandFacade).sendUserBets(userBet);
+        verify(commandFacade).getSendUserBetsCommand(userBet);
     }
 }

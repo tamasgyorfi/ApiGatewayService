@@ -1,9 +1,11 @@
 package hu.bets.apigateway.config;
 
-import hu.bets.apigateway.service.BetsService;
-import hu.bets.apigateway.service.SchedulesService;
+import hu.bets.apigateway.service.bets.BetsService;
+import hu.bets.apigateway.service.schedules.SchedulesService;
+import hu.bets.apigateway.service.users.UsersService;
 import hu.bets.apigateway.web.api.BetsResource;
 import hu.bets.apigateway.web.api.SchedulesResource;
+import hu.bets.apigateway.web.api.UsersResource;
 import hu.bets.common.config.CommonWebConfig;
 import hu.bets.common.config.model.Resources;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +17,12 @@ import org.springframework.context.annotation.Import;
 public class WebConfig {
 
     @Bean
-    public Resources resources(SchedulesResource schedulesBetResource, BetsResource betsResource) {
+    public Resources resources(SchedulesResource schedulesBetResource,
+                               BetsResource betsResource, UsersResource usersResource) {
         return new Resources()
                 .addResource(schedulesBetResource)
-                .addResource(betsResource);
+                .addResource(betsResource)
+                .addResource(usersResource);
     }
 
     @Bean
@@ -29,5 +33,10 @@ public class WebConfig {
     @Bean
     public BetsResource betsResource(BetsService betsService) {
         return new BetsResource(betsService);
+    }
+
+    @Bean
+    public UsersResource usersResource(UsersService usersService) {
+        return new UsersResource(usersService);
     }
 }

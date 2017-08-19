@@ -1,23 +1,28 @@
-package hu.bets.apigateway.command;
+package hu.bets.apigateway.command.bets;
 
 import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommandGroupKey;
-import hu.bets.apigateway.model.BetServiceErrorResponse;
-import hu.bets.apigateway.model.UserBet;
+import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.util.RequestRunner;
+import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
+import hu.bets.apigateway.model.bets.UserBet;
 import hu.bets.apigateway.service.ServiceResolverService;
-import hu.bets.common.services.Services;
-import org.apache.http.client.methods.HttpPost;
+import hu.bets.services.Services;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
+
 public class SendUserBetsCommand extends CommandBase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendUserBetsCommand.class);
     private static final String USER_BETS_PATH = "/bets/football/v1/bet";
     private static final Gson GSON = new Gson();
 
     private final UserBet payload;
 
-    SendUserBetsCommand(ServiceResolverService resolverService, UserBet payload) {
+    public SendUserBetsCommand(ServiceResolverService resolverService, UserBet payload) {
         super(HystrixCommandGroupKey.Factory.asKey("BETS"), resolverService);
         this.payload = payload;
     }
@@ -27,14 +32,17 @@ public class SendUserBetsCommand extends CommandBase {
         payload.setToken("empty-token");
 
         String endpoint = getFullEndpoint(Services.BETS, USER_BETS_PATH);
-        Optional<HttpPost> post = makePost(endpoint, GSON.toJson(payload));
+        Optional<String> result = new RequestRunner().runRequest(endpoint, GSON.toJson(payload));
+        if (result.isPresent()) {
+            LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result.get());
+            return result.get();
+        }
 
-        return post.map(this::runPost).orElseGet(this::getFallback);
+        return getFallback();
     }
 
     @Override
     protected String getFallback() {
         return GSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
     }
-
 }

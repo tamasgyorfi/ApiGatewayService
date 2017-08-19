@@ -1,4 +1,4 @@
-package hu.bets.apigateway.service;
+package hu.bets.apigateway.service.schedules;
 
 import org.apache.commons.text.similarity.JaroWinklerDistance;
 import org.apache.commons.text.similarity.LevenshteinDistance;
@@ -22,7 +22,7 @@ public class ClubBadgeResolverService implements BadgeResolverService {
     private final Map<String, String> crestsMap = new HashMap<>();
 
     @PostConstruct
-    void init() {
+    public void init() {
 
         try {
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream("crests.properties");
@@ -50,7 +50,7 @@ public class ClubBadgeResolverService implements BadgeResolverService {
         return retVal;
     }
 
-    String resolveBadge(String clubName) {
+    public String resolveBadge(String clubName) {
         LOGGER.info("Resolving crest for: {}", clubName);
         String result = "";
         double min = Integer.MAX_VALUE;

@@ -1,11 +1,13 @@
-package hu.bets.apigateway.command;
+package hu.bets.apigateway.command.bets;
 
 import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommandGroupKey;
-import hu.bets.apigateway.model.BetServiceErrorResponse;
+import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.schedules.RetrieveSchedulesCommand;
+import hu.bets.apigateway.command.util.RequestRunner;
+import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
-import hu.bets.common.services.Services;
-import org.apache.http.client.methods.HttpPost;
+import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,7 @@ public class RetrieveUserBetsCommand extends CommandBase {
     private String userId;
     private List<String> matchIds;
 
-    RetrieveUserBetsCommand(ServiceResolverService serviceResolverService, String userId, List<String> matchIds) {
+    public RetrieveUserBetsCommand(ServiceResolverService serviceResolverService, String userId, List<String> matchIds) {
         super(HystrixCommandGroupKey.Factory.asKey("BETS"), serviceResolverService);
         this.userId = userId;
         this.matchIds = matchIds;
@@ -30,10 +32,10 @@ public class RetrieveUserBetsCommand extends CommandBase {
     @Override
     protected String run() throws Exception {
         String fullEndpoint = getFullEndpoint(Services.BETS, USER_BETS_PATH);
-        Optional<HttpPost> httpPost = makePost(fullEndpoint, buildPayload());
-        if (httpPost.isPresent()) {
-            LOGGER.info("Running http post to retrieve bets.");
-            return runPost(httpPost.get());
+        Optional<String> result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
+        if (result.isPresent()) {
+            LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result.get());
+            return result.get();
         }
 
         return getFallback();

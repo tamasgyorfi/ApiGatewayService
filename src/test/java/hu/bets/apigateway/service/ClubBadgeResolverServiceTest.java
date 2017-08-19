@@ -1,5 +1,6 @@
 package hu.bets.apigateway.service;
 
+import hu.bets.apigateway.service.schedules.ClubBadgeResolverService;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,9 +1,9 @@
 package hu.bets.apigateway.web.api;
 
 import com.google.common.collect.Lists;
-import hu.bets.apigateway.model.Bet;
-import hu.bets.apigateway.model.UserBet;
-import hu.bets.apigateway.service.BetsService;
+import hu.bets.apigateway.model.bets.Bet;
+import hu.bets.apigateway.model.bets.UserBet;
+import hu.bets.apigateway.service.bets.BetsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

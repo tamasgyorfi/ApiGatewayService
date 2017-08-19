@@ -1,7 +1,7 @@
-package hu.bets.apigateway.service;
+package hu.bets.apigateway.service.bets;
 
 import hu.bets.apigateway.command.CommandFacade;
-import hu.bets.apigateway.model.UserBet;
+import hu.bets.apigateway.model.bets.UserBet;
 
 public class DefaultBetsService implements BetsService {
 
@@ -13,6 +13,6 @@ public class DefaultBetsService implements BetsService {
 
     @Override
     public String sendBetsToBetService(UserBet payload) {
-        return commandFacade.sendUserBets(payload).execute();
+        return commandFacade.getSendUserBetsCommand(payload).execute();
     }
 }
