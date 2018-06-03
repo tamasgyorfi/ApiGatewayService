@@ -1,5 +1,8 @@
 package hu.bets.apigateway.model.bets;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Bet {
 
     private String competitionId;
@@ -9,7 +12,13 @@ public class Bet {
     private int homeTeamGoals;
     private int awayTeamGoals;
 
-    public Bet(String competitionId, String matchId, String homeTeamId, String awayTeamId, int homeTeamGoals, int awayTeamGoals) {
+    @JsonCreator
+    public Bet(@JsonProperty("competitionId") String competitionId,
+               @JsonProperty("matchId") String matchId,
+               @JsonProperty("homeTeamId") String homeTeamId,
+               @JsonProperty("awayTeamId") String awayTeamId,
+               @JsonProperty("homeTeamGoals") int homeTeamGoals,
+               @JsonProperty("awayTeamGoals") int awayTeamGoals) {
         this.competitionId = competitionId;
         this.matchId = matchId;
         this.homeTeamId = homeTeamId;

@@ -1,7 +1,10 @@
 package hu.bets.apigateway.model.schedules;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Map;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Crests {
 
     private final Map<String, String> crests;

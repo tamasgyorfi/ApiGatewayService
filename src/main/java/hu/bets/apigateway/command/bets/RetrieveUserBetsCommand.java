@@ -1,12 +1,12 @@
 package hu.bets.apigateway.command.bets;
 
-import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
 import hu.bets.apigateway.command.schedules.RetrieveSchedulesCommand;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
+import hu.bets.common.util.json.Json;
 import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class RetrieveUserBetsCommand extends CommandBase {
 
-    private static final Gson GSON = new Gson();
+    private static final Json JSON = new Json();
     private static final Logger LOGGER = LoggerFactory.getLogger(RetrieveSchedulesCommand.class);
     private static final String USER_BETS_PATH = "/bets/football/v1/userBets";
 
@@ -42,12 +42,12 @@ public class RetrieveUserBetsCommand extends CommandBase {
     }
 
     private String buildPayload() {
-        return GSON.toJson(new UserBetsRequest(userId, matchIds, "token-to-be-filled"));
+        return JSON.toJson(new UserBetsRequest(userId, matchIds, "token-to-be-filled"));
     }
 
     @Override
     protected String getFallback() {
-        return GSON.toJson(new BetServiceErrorResponse("Unable to retrieve user bets.", "security-token-to-be-filled"));
+        return JSON.toJson(new BetServiceErrorResponse("Unable to retrieve user bets.", "security-token-to-be-filled"));
     }
 
     private static class UserBetsRequest {

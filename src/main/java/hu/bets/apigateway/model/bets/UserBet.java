@@ -1,14 +1,20 @@
 package hu.bets.apigateway.model.bets;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserBet {
 
     private String userId;
     private List<Bet> bets;
     private String token;
 
-    public UserBet(String userId, List<Bet> bets) {
+    @JsonCreator
+    public UserBet(@JsonProperty("userId") String userId, @JsonProperty("bets") List<Bet> bets) {
         this.userId = userId;
         this.bets = bets;
     }

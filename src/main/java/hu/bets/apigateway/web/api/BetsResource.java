@@ -1,9 +1,9 @@
 package hu.bets.apigateway.web.api;
 
-import com.google.gson.Gson;
 import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
 import hu.bets.apigateway.model.bets.UserBet;
 import hu.bets.apigateway.service.bets.BetsService;
+import hu.bets.common.util.json.Json;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 public class BetsResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BetsResource.class);
-    private static final Gson GSON = new Gson();
+    private static final Json JSON = new Json();
 
     private final BetsService betsService;
 
@@ -34,12 +34,12 @@ public class BetsResource {
     public String sendBets(String payload) {
         LOGGER.info("Incoming user bets received: {}", payload);
         try {
-            UserBet response = GSON.fromJson(payload, UserBet.class);
+            UserBet response = JSON.fromJson(payload, UserBet.class);
             LOGGER.info("User bets successfully sent to Best-Service. Result was: {}", response);
             return betsService.sendBetsToBetService(response);
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
-            return GSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
+            return JSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
         }
     }
 }

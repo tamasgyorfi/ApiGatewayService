@@ -1,9 +1,13 @@
 package hu.bets.apigateway.web.model.schedules;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class SchedulesRequest {
     private String userId;
 
-    public SchedulesRequest(String userId) {
+    @JsonCreator
+    public SchedulesRequest(@JsonProperty("userId") String userId) {
         this.userId = userId;
     }
 

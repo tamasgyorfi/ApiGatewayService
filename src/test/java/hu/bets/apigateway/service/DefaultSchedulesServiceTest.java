@@ -1,10 +1,10 @@
 package hu.bets.apigateway.service;
 
-import com.google.gson.Gson;
 import com.netflix.hystrix.HystrixCommand;
 import hu.bets.apigateway.command.CommandFacade;
 import hu.bets.apigateway.service.schedules.ClubBadgeResolverService;
 import hu.bets.apigateway.service.schedules.DefaultSchedulesService;
+import hu.bets.common.util.json.Json;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class DefaultSchedulesServiceTest {
         Path p = Paths.get(DefaultSchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
-        assertEquals(new String(bytes), new Gson().toJson(sut.getAggregatedResult("user1")));
+        assertEquals(new String(bytes), new Json().toJson(sut.getAggregatedResult("user1")));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class DefaultSchedulesServiceTest {
         Path p = Paths.get(DefaultSchedulesServiceTest.class.getClassLoader().getResource("expectedAggregationResult.json").toURI());
         byte[] bytes = Files.readAllBytes(p);
 
-        assertEquals("{\"schedules\":[],\"bets\":[],\"crests\":{},\"errors\":[\"error\"]}", new Gson().toJson(sut.getAggregatedResult("user1")));
+        assertEquals("{\"schedules\":[],\"bets\":[],\"crests\":{},\"errors\":[\"error\"]}", new Json().toJson(sut.getAggregatedResult("user1")));
     }
 
 }
