@@ -7,6 +7,7 @@ public class Bet {
 
     private String competitionId;
     private String matchId;
+    private String matchDate;
     private String homeTeamId;
     private String awayTeamId;
     private int homeTeamGoals;
@@ -15,12 +16,14 @@ public class Bet {
     @JsonCreator
     public Bet(@JsonProperty("competitionId") String competitionId,
                @JsonProperty("matchId") String matchId,
+               @JsonProperty("matchDate") String matchDate,
                @JsonProperty("homeTeamId") String homeTeamId,
                @JsonProperty("awayTeamId") String awayTeamId,
                @JsonProperty("homeTeamGoals") int homeTeamGoals,
                @JsonProperty("awayTeamGoals") int awayTeamGoals) {
         this.competitionId = competitionId;
         this.matchId = matchId;
+        this.matchDate = matchDate;
         this.homeTeamId = homeTeamId;
         this.awayTeamId = awayTeamId;
         this.homeTeamGoals = homeTeamGoals;

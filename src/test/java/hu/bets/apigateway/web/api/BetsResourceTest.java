@@ -22,12 +22,14 @@ public class BetsResourceTest {
             "   \"bets\": [\n" +
             "  {\"competitionId\":\"CL\",\n" +
             "    \"matchId\":\"12\",\n" +
+            "    \"matchDate\":\"2018\",\n" +
             "    \"homeTeamId\":\"Real Madrid\",\n" +
             "    \"awayTeamId\":\"Barcelona\",\n" +
             "    \"homeTeamGoals\":1,\n" +
             "    \"awayTeamGoals\":0},\n" +
             "  {\"competitionId\":\"EL\",\n" +
             "      \"matchId\":\"31\",\n" +
+            "    \"matchDate\":\"2018\",\n" +
             "      \"homeTeamId\":\"Arsenal\",\n" +
             "      \"awayTeamId\":\"Dinamo Zagreb\",\n" +
             "      \"homeTeamGoals\":1,\n" +
@@ -39,8 +41,8 @@ public class BetsResourceTest {
     private BetsService betsService;
     private UserBet userBet = new UserBet("user1",
             Lists.newArrayList(
-                    new Bet("CL", "12", "Real Madrid", "Barcelona", 1, 0),
-                    new Bet("EL", "31", "Arsenal", "Dinamo Zagreb", 1, 2)
+                    new Bet("CL", "12", "2019","Real Madrid", "Barcelona", 1, 0),
+                    new Bet("EL", "31", "2019","Arsenal", "Dinamo Zagreb", 1, 2)
             ));
 
     @Before
