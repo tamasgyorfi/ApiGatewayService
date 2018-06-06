@@ -16,6 +16,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("aggregator/v1/users")
@@ -30,11 +31,11 @@ public class UsersResource {
         this.usersService = usersService;
     }
 
-    @Path("register")
+    @Path("add")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public String register(String payload) {
+    public Response register(String payload) {
         LOGGER.info("Register endpoint called with payload: {}", payload);
         try {
             User user = JSON.fromJson(payload, User.class);
@@ -43,10 +44,14 @@ public class UsersResource {
             usersService.registerUse(user);
             LOGGER.info("User successfully registered.");
 
-            return JSON.toJson(UsersResponse.success("Successfully registered user.", "empty_token"));
+            return Response.ok()
+                    .entity(JSON.toJson(UsersResponse.success("Successfully registered user.", "empty_token")))
+                    .build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while registering user. ", e);
-            return JSON.toJson(UsersResponse.failure("Unable to register user.", "empty_token"));
+            return Response.serverError()
+                    .entity(JSON.toJson(UsersResponse.failure("Unable to register user.", "empty_token")))
+                    .build();
         }
     }
 
@@ -54,7 +59,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public String updateFriends(String payload) {
+    public Response updateFriends(String payload) {
         LOGGER.info("Update friends endpoint called with payload: {}", payload);
         try {
             FriendsUpdate friendsUpdate = JSON.fromJson(payload, FriendsUpdate.class);
@@ -64,18 +69,22 @@ public class UsersResource {
             List<User> newList = checkResponse(response);
             LOGGER.info("User list successfully modified. Resulting list is: {}", newList);
 
-            return JSON.toJson(UsersResponse.success(newList, "empty_token"));
+            return Response.ok()
+                    .entity(JSON.toJson(UsersResponse.success(newList, "empty_token")))
+                    .build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while updating user list. ", e);
-            return JSON.toJson(UsersResponse.failure("Unable to register user. " + e.getMessage(), "empty_token"));
+            return Response.serverError()
+                    .entity(JSON.toJson(UsersResponse.failure("Unable to register user. " + e.getMessage(), "empty_token")))
+                    .build();
         }
     }
 
-    @Path("friends")
+    @Path("user-friends")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public String getFriends(String payload) {
+    public Response getFriends(String payload) {
         LOGGER.info("Get friends endpoint called with payload: {}", payload);
         try {
             GetFriendsPayload getFriendsPayload = JSON.fromJson(payload, GetFriendsPayload.class);
@@ -85,10 +94,12 @@ public class UsersResource {
             List<User> newList = checkResponse(response);
             LOGGER.info("User list successfully retrieved. Resulting list is: {}", newList);
 
-            return JSON.toJson(UsersResponse.success(newList, "empty_token"));
+            return Response.ok().entity(JSON.toJson(UsersResponse.success(newList, "empty_token"))).build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while retrieving user list. ", e);
-            return JSON.toJson(UsersResponse.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token"));
+            return Response.serverError()
+                .entity(JSON.toJson(UsersResponse.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
+                .build();
         }
     }
 

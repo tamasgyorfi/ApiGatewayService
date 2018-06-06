@@ -2,15 +2,17 @@ package hu.bets.apigateway.web.api;
 
 import hu.bets.apigateway.model.schedules.Schedules;
 import hu.bets.apigateway.service.schedules.SchedulesService;
+import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,8 +32,10 @@ public class SchedulesResourceTest {
     public void getSchedulesParsesPayloadAndDelegates() {
 
         when(scheduleService.getAggregatedResult("aaakak")).thenReturn(schedules);
-        String schedules = sut.getSchedules("{\"userId\":\"aaakak\"}");
+        Response response = sut.getSchedules("{\"userId\":\"aaakak\"}");
+        String schedules = (String) response.getEntity();
 
+        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         assertEquals("{\"schedules\":[],\"bets\":[],\"errors\":[]}", schedules);
     }
 
@@ -39,7 +43,10 @@ public class SchedulesResourceTest {
     public void exceptionResultsInErrorPayload() {
         when(scheduleService.getAggregatedResult("aaakak")).thenThrow(new IllegalArgumentException());
 
-        String schedules = sut.getSchedules("{\"userId\":\"aaakak\"}");
+        Response response = sut.getSchedules("{\"userId\":\"aaakak\"}");
+        String schedules = (String) response.getEntity();
+
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertEquals("{\"error\":\"Unable to retrieve schedules. null\",\"matches\":[],\"token\":\"\"}", schedules);
     }
 }

@@ -10,6 +10,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.ws.rs.core.Response;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -59,8 +61,10 @@ public class BetsResourceTest {
     @Test
     public void exceptionResultsInErrorPayload() {
         when(betsService.sendBetsToBetService(userBet)).thenThrow(new IllegalArgumentException());
-        String result = sut.sendBets(PAYLOAD);
+        Response response = sut.sendBets(PAYLOAD);
+        String result = (String) response.getEntity();
 
+        assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
         assertEquals("{\"payload\":[],\"error\":\"Unable to send user bets to the Bets-Service.\",\"token\":\"token\"}", result);
     }
 }

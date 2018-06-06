@@ -13,6 +13,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("aggregator/v1/bets")
 @Component
@@ -27,19 +28,19 @@ public class BetsResource {
         this.betsService = betsService;
     }
 
-    @Path("userBets")
+    @Path("user-bets")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public String sendBets(String payload) {
+    public Response sendBets(String payload) {
         LOGGER.info("Incoming user bets received: {}", payload);
         try {
             UserBet response = JSON.fromJson(payload, UserBet.class);
             LOGGER.info("User bets successfully sent to Best-Service. Result was: {}", response);
-            return betsService.sendBetsToBetService(response);
+            return Response.ok().entity(betsService.sendBetsToBetService(response)).build();
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
-            return JSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
+            return Response.serverError().entity(JSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"))).build();
         }
     }
 }

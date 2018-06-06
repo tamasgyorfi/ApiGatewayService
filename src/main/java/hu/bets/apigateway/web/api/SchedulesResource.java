@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("aggregator/v1/schedules")
 @Component
@@ -32,11 +33,11 @@ public class SchedulesResource {
         return "<html><body><h1>Api gateway up and running!</h1></body></html>";
     }
 
-    @Path("upcomings")
+    @Path("upcoming-matches")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public String getSchedules(String payload) {
+    public Response getSchedules(String payload) {
         try {
             LOGGER.info("Incoming request for schedules {}.", payload);
             SchedulesRequest schedulesRequest = JSON.fromJson(payload, SchedulesRequest.class);
@@ -46,9 +47,11 @@ public class SchedulesResource {
             String resultingJson = JSON.toJson(retVal);
             LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
 
-            return resultingJson;
+            return Response.ok().entity(resultingJson).build();
         } catch (Exception e) {
-            return JSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules. " + e.getMessage(), ""));
+            return Response.serverError()
+                    .entity(JSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules. " + e.getMessage(), "")))
+                    .build();
         }
     }
 
