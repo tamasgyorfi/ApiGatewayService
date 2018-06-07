@@ -12,7 +12,7 @@ public class DefaultBetsService implements BetsService {
     }
 
     @Override
-    public String sendBetsToBetService(UserBet payload) {
-        return commandFacade.getSendUserBetsCommand(payload).execute();
+    public String sendBetsToBetService(String userId, UserBet payload) {
+        return commandFacade.getSendUserBetsCommand(userId, payload).execute();
     }
 }

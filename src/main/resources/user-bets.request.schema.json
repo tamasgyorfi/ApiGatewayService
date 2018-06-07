@@ -1,0 +1,78 @@
+{
+  "$id": "user-bets.request.schema.json",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "properties": {
+    "bets": {
+      "$id": "/properties/bets",
+      "type": "array",
+      "items": {
+        "$id": "/properties/bets/items",
+        "type": "object",
+        "properties": {
+          "competitionId": {
+            "$id": "/properties/bets/items/properties/competitionId",
+            "type": "string",
+            "title": "The Competitionid Schema ",
+            "default": ""
+          },
+          "matchId": {
+            "$id": "/properties/bets/items/properties/matchId",
+            "type": "string",
+            "title": "The Matchid Schema ",
+            "default": ""
+          },
+          "matchDate": {
+            "$id": "/properties/bets/items/properties/matchDate",
+            "type": "string",
+            "title": "The Matchdate Schema ",
+            "default": ""
+          },
+          "homeTeamId": {
+            "$id": "/properties/bets/items/properties/homeTeamId",
+            "type": "string",
+            "title": "The Hometeamid Schema ",
+            "default": ""
+          },
+          "awayTeamId": {
+            "$id": "/properties/bets/items/properties/awayTeamId",
+            "type": "string",
+            "title": "The Awayteamid Schema ",
+            "default": ""
+          },
+          "homeTeamGoals": {
+            "$id": "/properties/bets/items/properties/homeTeamGoals",
+            "type": "integer",
+            "title": "The Hometeamgoals Schema ",
+            "default": 0
+          },
+          "awayTeamGoals": {
+            "$id": "/properties/bets/items/properties/awayTeamGoals",
+            "type": "integer",
+            "title": "The Awayteamgoals Schema ",
+            "default": 0
+          }
+        },
+        "required": [
+          "competitionId",
+          "matchId",
+          "matchDate",
+          "homeTeamId",
+          "awayTeamId",
+          "homeTeamGoals",
+          "awayTeamGoals"
+        ]
+      }
+    },
+    "token": {
+      "$id": "/properties/token",
+      "type": "string",
+      "title": "The Token Schema "
+    }
+  },
+  "required": [
+    "bets",
+    "token"
+  ]
+}

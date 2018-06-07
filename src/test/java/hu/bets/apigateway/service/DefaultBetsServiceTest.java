@@ -31,9 +31,9 @@ public class DefaultBetsServiceTest {
 
     @Test
     public void sendBetsToBetServiceShouldDelegateCallToCommandFacade() {
-        when(commandFacade.getSendUserBetsCommand(userBet)).thenReturn(command);
-        sut.sendBetsToBetService(userBet);
+        when(commandFacade.getSendUserBetsCommand("userId", userBet)).thenReturn(command);
+        sut.sendBetsToBetService("userId", userBet);
 
-        verify(commandFacade).getSendUserBetsCommand(userBet);
+        verify(commandFacade).getSendUserBetsCommand("userId", userBet);
     }
 }

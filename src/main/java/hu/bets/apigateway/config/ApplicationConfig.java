@@ -10,6 +10,7 @@ import hu.bets.apigateway.service.schedules.SchedulesService;
 import hu.bets.apigateway.service.users.DefaultUsersService;
 import hu.bets.apigateway.service.users.UsersService;
 import hu.bets.common.util.EnvironmentVarResolver;
+import hu.bets.common.util.schema.SchemaValidator;
 import hu.bets.servicediscovery.EurekaFacade;
 import hu.bets.servicediscovery.EurekaFacadeImpl;
 import org.springframework.context.annotation.Bean;
@@ -52,5 +53,10 @@ public class ApplicationConfig {
     @Bean
     public UsersService usersService(CommandFacade commandFacade) {
         return new DefaultUsersService(commandFacade);
+    }
+
+    @Bean
+    public SchemaValidator schemaValidator() {
+        return new SchemaValidator();
     }
 }

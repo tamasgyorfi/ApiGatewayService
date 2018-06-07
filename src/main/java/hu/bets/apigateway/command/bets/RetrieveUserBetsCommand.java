@@ -18,7 +18,7 @@ public class RetrieveUserBetsCommand extends CommandBase {
 
     private static final Json JSON = new Json();
     private static final Logger LOGGER = LoggerFactory.getLogger(RetrieveSchedulesCommand.class);
-    private static final String USER_BETS_PATH = "/bets/football/v1/userBets";
+    private static final String USER_BETS_PATH = "/bets/football/v1/%s/user-bets";
 
     private String userId;
     private List<String> matchIds;
@@ -31,7 +31,7 @@ public class RetrieveUserBetsCommand extends CommandBase {
 
     @Override
     protected String run() throws Exception {
-        String fullEndpoint = getFullEndpoint(Services.BETS, USER_BETS_PATH);
+        String fullEndpoint = getFullEndpoint(Services.BETS, String.format(USER_BETS_PATH, userId));
         Optional<String> result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
         if (result.isPresent()) {
             LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result.get());

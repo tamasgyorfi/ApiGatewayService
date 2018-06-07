@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import hu.bets.apigateway.model.bets.Bet;
 import hu.bets.apigateway.model.bets.UserBet;
 import hu.bets.apigateway.service.bets.BetsService;
+import hu.bets.common.util.schema.SchemaValidator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +42,9 @@ public class BetsResourceTest {
     private BetsResource sut;
     @Mock
     private BetsService betsService;
+    @Mock
+    private SchemaValidator schemaValidatorMock;
+
     private UserBet userBet = new UserBet("user1",
             Lists.newArrayList(
                     new Bet("CL", "12", "2019","Real Madrid", "Barcelona", 1, 0),
@@ -49,19 +53,23 @@ public class BetsResourceTest {
 
     @Before
     public void before() {
-        sut = new BetsResource(betsService);
+        sut = new BetsResource(betsService) {
+            {
+                schemaValidator = schemaValidatorMock;
+            }
+        };
     }
 
     @Test
     public void userBetsEndpointShouldConvertPayloadAndDelegate() {
-        sut.sendBets(PAYLOAD);
-        verify(betsService).sendBetsToBetService(userBet);
+        sut.sendBets("userId", PAYLOAD);
+        verify(betsService).sendBetsToBetService("userId", userBet);
     }
 
     @Test
     public void exceptionResultsInErrorPayload() {
-        when(betsService.sendBetsToBetService(userBet)).thenThrow(new IllegalArgumentException());
-        Response response = sut.sendBets(PAYLOAD);
+        when(betsService.sendBetsToBetService("userId", userBet)).thenThrow(new IllegalArgumentException());
+        Response response = sut.sendBets("userId", PAYLOAD);
         String result = (String) response.getEntity();
 
         assertEquals(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
