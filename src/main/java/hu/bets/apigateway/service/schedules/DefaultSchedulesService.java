@@ -61,7 +61,7 @@ public class DefaultSchedulesService implements SchedulesService {
         List<String> userBets = null;
         String betsError;
         try {
-            String userBetsJson = getUserBets(userId, java.util.Arrays.asList("1"));
+            String userBetsJson = getUserBets(userId, matchIds);
             Object userBetsDoc = Configuration.defaultConfiguration().jsonProvider().parse(userBetsJson);
             LOGGER.info("Bets received: {}", userBetsJson);
             userBets = read(userBetsDoc, BET_PAYLOAD_PATH);
