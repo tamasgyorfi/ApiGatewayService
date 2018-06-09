@@ -61,12 +61,13 @@ public class DefaultSchedulesService implements SchedulesService {
         List<String> userBets = null;
         String betsError;
         try {
-            String userBetsJson = getUserBets(userId, matchIds);
+            String userBetsJson = getUserBets(userId, java.util.Arrays.asList("1"));
             Object userBetsDoc = Configuration.defaultConfiguration().jsonProvider().parse(userBetsJson);
             LOGGER.info("Bets received: {}", userBetsJson);
             userBets = read(userBetsDoc, BET_PAYLOAD_PATH);
             betsError = read(userBetsDoc, ERROR_PATH);
         } catch (Exception e) {
+            LOGGER.error("Error running command.", e);
             betsError = e.getMessage();
         }
         return new Schedules(matches,

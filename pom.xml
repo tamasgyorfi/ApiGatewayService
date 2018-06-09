@@ -6,7 +6,11 @@
 
     <groupId>hu.bets</groupId>
     <artifactId>api-gateway</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>../football-tools</module>
+    </modules>
 
     <properties>
         <spring.version>4.3.7.RELEASE</spring.version>
@@ -79,6 +83,12 @@
             <groupId>hu.bets</groupId>
             <artifactId>service-discovery</artifactId>
             <version>0.0.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>hu.bets</groupId>
+            <artifactId>football-bets-shared</artifactId>
+            <version>0.0.3</version>
         </dependency>
 
         <!-- TEST -->
