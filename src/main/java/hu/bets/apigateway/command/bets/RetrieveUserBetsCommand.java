@@ -9,11 +9,13 @@ import hu.bets.apigateway.service.ServiceResolverService;
 import hu.bets.common.util.json.Json;
 import hu.bets.model.filter.EqualsFilter;
 import hu.bets.model.filter.Field;
+import hu.bets.model.filter.MultiEqualsFilter;
 import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import hu.bets.model.filter.Filter;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,7 +62,7 @@ public class RetrieveUserBetsCommand extends CommandBase {
         private String token;
 
         UserBetsRequest(List<String> ids, String token) {
-            filters = ids.stream().map(id -> new EqualsFilter(Field.MATCH_ID, id)).collect(Collectors.toList());
+            filters = Arrays.asList(new MultiEqualsFilter(Field.MATCH_ID, ids));
             this.token = token;
         }
     }
