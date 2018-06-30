@@ -2,6 +2,7 @@ package hu.bets.apigateway.command.users;
 
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.CommandException;
 import hu.bets.apigateway.command.bets.SendUserBetsCommand;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.users.User;
@@ -30,17 +31,14 @@ public class RegisterUserCommand extends CommandBase {
     protected String run() throws Exception {
         user.setToken("empty_token");
         String endpoint = getFullEndpoint(Services.USERS, USER_REGISTER_PATH);
-        Optional<String> result = new RequestRunner().runRequest(endpoint, JSON.toJson(user));
-        if (result.isPresent()) {
-            LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result.get());
-            return result.get();
-        }
+        String result = new RequestRunner().runRequest(endpoint, JSON.toJson(user));
 
-        return getFallback();
+        LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result);
+        return result;
     }
 
     @Override
     protected String getFallback() {
-        return JSON.toJson(new UserServiceErrorResponse("Unable to Register user.", "token"));
+        throw new CommandException("Falling back...");
     }
 }

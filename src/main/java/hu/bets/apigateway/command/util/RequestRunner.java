@@ -1,5 +1,6 @@
 package hu.bets.apigateway.command.util;
 
+import hu.bets.apigateway.command.CommandException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.config.RequestConfig;
@@ -12,6 +13,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -20,30 +22,25 @@ public class RequestRunner {
     private static final int TIMEOUT = 10_000;
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestRunner.class);
 
-    public Optional<String> runRequest(String fullEndpoint, String payload) {
-        Optional<HttpPost> httpPost = makePost(fullEndpoint, payload);
-        if (httpPost.isPresent()) {
-            return runPost(httpPost.get());
-        }
-
-        return Optional.empty();
+    public String runRequest(String fullEndpoint, String payload) {
+        HttpPost httpPost = makePost(fullEndpoint, payload);
+        return runPost(httpPost);
     }
 
-    Optional<HttpPost> makePost(String fullEndpoint, String payload) {
+    HttpPost makePost(String fullEndpoint, String payload) {
         try {
             HttpPost request = new HttpPost(fullEndpoint);
             HttpEntity entity = new StringEntity(payload);
             request.setEntity(entity);
             request.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-            return Optional.of(request);
+            return request;
         } catch (Exception e) {
             LOGGER.info("Exception while trying to build post request for path:{} and payload:{} ", fullEndpoint, payload, e);
+            throw new CommandException(e.getMessage());
         }
-
-        return Optional.empty();
     }
 
-    Optional<String> runPost(HttpPost httpPost) {
+    String runPost(HttpPost httpPost) {
         RequestConfig requestConfig = RequestConfig.custom()
                 .setConnectTimeout(TIMEOUT)
                 .setConnectionRequestTimeout(TIMEOUT)
@@ -56,13 +53,15 @@ public class RequestRunner {
 
         try {
             CloseableHttpResponse response = client.execute(httpPost);
+            if (response.getStatusLine().getStatusCode() != Response.Status.OK.getStatusCode()) {
+                throw new CommandException("Unable to retrieve data");
+            }
             String result = EntityUtils.toString(response.getEntity());
             LOGGER.info("Successfully run post request.");
-            return Optional.ofNullable(result);
+            return result;
         } catch (IOException e) {
             LOGGER.error("Unable to run http post. ", e);
+            throw new CommandException(e.getMessage());
         }
-
-        return Optional.empty();
     }
 }

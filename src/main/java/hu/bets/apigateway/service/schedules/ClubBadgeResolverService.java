@@ -59,7 +59,6 @@ public class ClubBadgeResolverService implements BadgeResolverService {
             if (distance < min) {
                 result = club;
                 min = distance;
-                LOGGER.info("New best match found: {}", result);
             }
         }
 

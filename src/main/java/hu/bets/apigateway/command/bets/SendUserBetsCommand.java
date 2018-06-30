@@ -2,6 +2,7 @@ package hu.bets.apigateway.command.bets;
 
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.CommandException;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
 import hu.bets.apigateway.model.bets.UserBet;
@@ -34,17 +35,14 @@ public class SendUserBetsCommand extends CommandBase {
         payload.setToken("empty-token");
 
         String endpoint = getFullEndpoint(Services.BETS, String.format(USER_BETS_PATH, userId));
-        Optional<String> result = new RequestRunner().runRequest(endpoint, JSON.toJson(payload));
-        if (result.isPresent()) {
-            LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result.get());
-            return result.get();
-        }
+        String result = new RequestRunner().runRequest(endpoint, JSON.toJson(payload));
 
-        return getFallback();
+        LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result);
+        return result;
     }
 
     @Override
     protected String getFallback() {
-        return JSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token"));
+        throw new CommandException("Falling back...");
     }
 }

@@ -2,6 +2,7 @@ package hu.bets.apigateway.command.users;
 
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.CommandException;
 import hu.bets.apigateway.command.bets.SendUserBetsCommand;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.users.FriendsUpdate;
@@ -11,8 +12,6 @@ import hu.bets.common.util.json.Json;
 import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Optional;
 
 public class UpdateFriendsCommand extends CommandBase {
 
@@ -31,18 +30,15 @@ public class UpdateFriendsCommand extends CommandBase {
     protected String run() throws Exception {
         friendsUpdate.setToken("empty_token");
         String endpoint = getFullEndpoint(Services.USERS, MODIFY_FRIENDS_PATH);
-        Optional<String> result = new RequestRunner().runRequest(endpoint, JSON.toJson(friendsUpdate));
-        if (result.isPresent()) {
-            LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result.get());
-            return result.get();
-        }
+        String result = new RequestRunner().runRequest(endpoint, JSON.toJson(friendsUpdate));
 
-        return getFallback();
+        LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result);
+        return result;
     }
 
     @Override
     protected String getFallback() {
-        return JSON.toJson(new UserServiceErrorResponse("Unable to modify user's friends.", "token"));
+        throw new CommandException("Falling back...");
     }
 
 }

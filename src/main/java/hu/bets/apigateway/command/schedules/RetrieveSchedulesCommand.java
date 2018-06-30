@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.CommandException;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.schedules.ScheduleServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
@@ -28,18 +29,15 @@ public class RetrieveSchedulesCommand extends CommandBase {
     @Override
     protected String run() throws Exception {
         String fullEndpoint = getFullEndpoint(Services.MATCHES, SCHEDULES_PATH);
-        Optional<String> result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
-        if (result.isPresent()) {
-            LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result.get());
-            return result.get();
-        }
+        String result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
 
-        return getFallback();
+        LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result);
+        return result;
     }
 
     @Override
     protected String getFallback() {
-        return JSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules.", TOKEN));
+        throw new CommandException("Falling back...");
     }
 
     private String buildPayload() {

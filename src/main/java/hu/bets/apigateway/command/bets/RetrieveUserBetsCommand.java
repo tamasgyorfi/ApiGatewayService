@@ -2,23 +2,21 @@ package hu.bets.apigateway.command.bets;
 
 import com.netflix.hystrix.HystrixCommandGroupKey;
 import hu.bets.apigateway.command.CommandBase;
+import hu.bets.apigateway.command.CommandException;
 import hu.bets.apigateway.command.schedules.RetrieveSchedulesCommand;
 import hu.bets.apigateway.command.util.RequestRunner;
 import hu.bets.apigateway.model.bets.BetServiceErrorResponse;
 import hu.bets.apigateway.service.ServiceResolverService;
 import hu.bets.common.util.json.Json;
-import hu.bets.model.filter.EqualsFilter;
 import hu.bets.model.filter.Field;
+import hu.bets.model.filter.Filter;
 import hu.bets.model.filter.MultiEqualsFilter;
 import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import hu.bets.model.filter.Filter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class RetrieveUserBetsCommand extends CommandBase {
 
@@ -39,13 +37,10 @@ public class RetrieveUserBetsCommand extends CommandBase {
     protected String run() throws Exception {
         String fullEndpoint = getFullEndpoint(Services.BETS, String.format(USER_BETS_PATH, userId));
         LOGGER.info("Endpoint is: {}", fullEndpoint);
-        Optional<String> result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
-        if (result.isPresent()) {
-            LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result.get());
-            return result.get();
-        }
+        String result = new RequestRunner().runRequest(fullEndpoint, buildPayload());
 
-        return getFallback();
+        LOGGER.info("Retrieved response from {}. Response was: {}", fullEndpoint, result);
+        return result;
     }
 
     private String buildPayload() {
@@ -54,7 +49,7 @@ public class RetrieveUserBetsCommand extends CommandBase {
 
     @Override
     protected String getFallback() {
-        return JSON.toJson(new BetServiceErrorResponse("Unable to retrieve user bets.", "security-token-to-be-filled"));
+        throw new CommandException("Falling back...");
     }
 
     private static class UserBetsRequest {

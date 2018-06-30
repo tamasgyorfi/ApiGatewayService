@@ -5,6 +5,7 @@ import hu.bets.apigateway.model.schedules.Schedules;
 import hu.bets.apigateway.service.schedules.SchedulesService;
 import hu.bets.apigateway.web.model.schedules.SchedulesRequest;
 import hu.bets.common.util.json.Json;
+import hu.bets.common.util.json.JsonParsingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,8 @@ public class SchedulesResource {
             LOGGER.info("Returning payload for request made by user {}. Payload is: {}", schedulesRequest.getUserId(), resultingJson);
 
             return Response.ok().entity(resultingJson).build();
+        } catch (JsonParsingException e) {
+            return Response.status(400).entity("Invalid JSON request received").build();
         } catch (Exception e) {
             return Response.serverError()
                     .entity(JSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules. " + e.getMessage(), "")))

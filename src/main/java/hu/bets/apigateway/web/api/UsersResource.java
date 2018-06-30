@@ -7,6 +7,7 @@ import hu.bets.apigateway.web.model.users.GetFriendsPayload;
 import hu.bets.apigateway.web.model.users.PayloadWithToken;
 import hu.bets.apigateway.web.model.users.UsersResponse;
 import hu.bets.common.util.json.Json;
+import hu.bets.common.util.json.JsonParsingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,8 @@ public class UsersResource {
             return Response.ok()
                     .entity(JSON.toJson(UsersResponse.success("Successfully registered user.", "empty_token")))
                     .build();
+        } catch (JsonParsingException e) {
+            return Response.status(400).entity("Invalid JSON request received").build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while registering user. ", e);
             return Response.serverError()
@@ -72,7 +75,9 @@ public class UsersResource {
             return Response.ok()
                     .entity(JSON.toJson(UsersResponse.success(newList, "empty_token")))
                     .build();
-        } catch (Exception e) {
+        } catch (JsonParsingException e) {
+            return Response.status(400).entity("Invalid JSON request received").build();
+        }  catch (Exception e) {
             LOGGER.error("Exception caught while updating user list. ", e);
             return Response.serverError()
                     .entity(JSON.toJson(UsersResponse.failure("Unable to register user. " + e.getMessage(), "empty_token")))
@@ -95,11 +100,13 @@ public class UsersResource {
             LOGGER.info("User list successfully retrieved. Resulting list is: {}", newList);
 
             return Response.ok().entity(JSON.toJson(UsersResponse.success(newList, "empty_token"))).build();
-        } catch (Exception e) {
+        } catch (JsonParsingException e) {
+            return Response.status(400).entity("Invalid JSON request received").build();
+        }  catch (Exception e) {
             LOGGER.error("Exception caught while retrieving user list. ", e);
             return Response.serverError()
-                .entity(JSON.toJson(UsersResponse.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
-                .build();
+                    .entity(JSON.toJson(UsersResponse.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
+                    .build();
         }
     }
 
