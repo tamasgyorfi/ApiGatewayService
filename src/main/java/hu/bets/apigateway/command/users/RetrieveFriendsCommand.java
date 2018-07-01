@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class RetrieveFriendsCommand extends CommandBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendUserBetsCommand.class);
-    private static final String USER_FRIENDS_PATH = "/users/football/v1/friends";
+    private static final String USER_FRIENDS_PATH = "/users/football/v1/friends/%s";
     private static final Json JSON = new Json();
     private final String userId;
 
@@ -30,7 +30,7 @@ public class RetrieveFriendsCommand extends CommandBase {
         User user = new User(userId, "", "");
         user.setToken("empty_token");
 
-        String endpoint = getFullEndpoint(Services.USERS, USER_FRIENDS_PATH);
+        String endpoint = getFullEndpoint(Services.USERS, String.format(USER_FRIENDS_PATH, userId));
         String result = new RequestRunner().runRequest(endpoint, JSON.toJson(user));
 
         LOGGER.info("Retrieved response from {}. Response was: {}", endpoint, result);

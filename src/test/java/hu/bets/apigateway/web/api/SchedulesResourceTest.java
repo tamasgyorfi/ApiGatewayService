@@ -1,7 +1,9 @@
 package hu.bets.apigateway.web.api;
 
 import hu.bets.apigateway.model.schedules.Schedules;
+import hu.bets.apigateway.model.users.User;
 import hu.bets.apigateway.service.schedules.SchedulesService;
+import hu.bets.common.util.json.Json;
 import org.apache.http.util.EntityUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,8 @@ public class SchedulesResourceTest {
 
     @Test
     public void getSchedulesParsesPayloadAndDelegates() {
+
+        System.out.println(new Json().toJson(new User("id", "http", "nev")));
 
         when(scheduleService.getAggregatedResult("aaakak")).thenReturn(schedules);
         Response response = sut.getSchedules("{\"userId\":\"aaakak\"}");

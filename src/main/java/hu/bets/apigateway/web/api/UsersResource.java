@@ -12,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -85,17 +82,17 @@ public class UsersResource {
         }
     }
 
-    @Path("user-friends")
+    @Path("user-friends/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response getFriends(String payload) {
+    public Response getFriends(@PathParam("userId") String userId, String payload) {
         LOGGER.info("Get friends endpoint called with payload: {}", payload);
         try {
             GetFriendsPayload getFriendsPayload = JSON.fromJson(payload, GetFriendsPayload.class);
             LOGGER.info("{} converted to GetFriendsPayload object: {}", payload, getFriendsPayload);
             LOGGER.info("Calling users service to get friends list.");
-            String response = usersService.getFriends(getFriendsPayload.getUserId());
+            String response = usersService.getFriends(userId);
             List<User> newList = checkResponse(response);
             LOGGER.info("User list successfully retrieved. Resulting list is: {}", newList);
 
