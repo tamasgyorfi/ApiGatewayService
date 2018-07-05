@@ -35,20 +35,20 @@ public class ScoresResource {
 
             return javax.ws.rs.core.Response.ok()
                     .entity(JSON.toJson(Response.success(response, "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
             return javax.ws.rs.core.Response.status(400)
                     .entity("Invalid JSON request received")
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while retrieving user toplist. ", e);
             return javax.ws.rs.core.Response.serverError()
                     .entity(JSON.toJson(Response.failure("Unable to retrieve user toplist. " + e.getMessage(), "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }

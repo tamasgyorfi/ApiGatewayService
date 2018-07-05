@@ -50,19 +50,19 @@ public class SchedulesResource {
 
             return Response.ok()
                     .entity(resultingJson)
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
             return Response.status(400)
                     .entity("Invalid JSON request received")
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (Exception e) {
             return Response.serverError()
                     .entity(JSON.toJson(new ScheduleServiceErrorResponse("Unable to retrieve schedules. " + e.getMessage(), "")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }

@@ -42,21 +42,21 @@ public class BetsResource {
             LOGGER.info("User bets successfully sent to Best-Service. Result was: {}", response);
             return Response.ok()
                     .entity(betsService.sendBetsToBetService(userId, response))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (InvalidScemaException ise) {
             LOGGER.info("Invalid request detected. Validation errors were: {}", ise.getMessage());
             return Response.status(Response.Status.BAD_REQUEST)
                     .entity(JSON.toJson(new BetServiceErrorResponse(ise.getMessage(), "token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (Exception e) {
             LOGGER.error("Unable to send user bets to Bets-Service.", e);
             return Response.serverError()
                     .entity(JSON.toJson(new BetServiceErrorResponse("Unable to send user bets to the Bets-Service.", "token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
