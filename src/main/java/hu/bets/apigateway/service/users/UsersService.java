@@ -3,8 +3,6 @@ package hu.bets.apigateway.service.users;
 import hu.bets.apigateway.model.users.FriendsUpdate;
 import hu.bets.apigateway.model.users.User;
 
-import java.util.List;
-
 public interface UsersService {
 
     /**

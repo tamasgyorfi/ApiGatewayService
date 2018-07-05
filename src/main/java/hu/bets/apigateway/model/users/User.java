@@ -32,4 +32,20 @@ public class User {
                 ", token='" + token + '\'' +
                 '}';
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getToken() {
+        return token;
+    }
 }

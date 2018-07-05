@@ -6,8 +6,10 @@ import hu.bets.apigateway.command.bets.SendUserBetsCommand;
 import hu.bets.apigateway.command.schedules.RetrieveSchedulesCommand;
 import hu.bets.apigateway.command.users.RegisterUserCommand;
 import hu.bets.apigateway.command.users.RetrieveFriendsCommand;
+import hu.bets.apigateway.command.scores.ToplistCommand;
 import hu.bets.apigateway.command.users.UpdateFriendsCommand;
 import hu.bets.apigateway.model.bets.UserBet;
+import hu.bets.apigateway.model.scores.Toplist;
 import hu.bets.apigateway.model.users.FriendsUpdate;
 import hu.bets.apigateway.model.users.User;
 import hu.bets.apigateway.service.ServiceResolverService;
@@ -46,4 +48,7 @@ public class CommandFacade {
         return new UpdateFriendsCommand(resolverService, friendsUpdate);
     }
 
+    public HystrixCommand<Toplist> getToplistCommand(String userId) {
+        return new ToplistCommand(resolverService, userId);
+    }
 }

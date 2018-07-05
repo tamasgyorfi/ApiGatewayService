@@ -7,6 +7,8 @@ import hu.bets.apigateway.service.bets.DefaultBetsService;
 import hu.bets.apigateway.service.schedules.ClubBadgeResolverService;
 import hu.bets.apigateway.service.schedules.DefaultSchedulesService;
 import hu.bets.apigateway.service.schedules.SchedulesService;
+import hu.bets.apigateway.service.scores.DefaultScoresService;
+import hu.bets.apigateway.service.scores.ScoresService;
 import hu.bets.apigateway.service.users.DefaultUsersService;
 import hu.bets.apigateway.service.users.UsersService;
 import hu.bets.common.util.EnvironmentVarResolver;
@@ -53,6 +55,11 @@ public class ApplicationConfig {
     @Bean
     public UsersService usersService(CommandFacade commandFacade) {
         return new DefaultUsersService(commandFacade);
+    }
+
+    @Bean
+    public ScoresService scoresService(CommandFacade commandFacade) {
+        return new DefaultScoresService(commandFacade);
     }
 
     @Bean

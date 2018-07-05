@@ -8,7 +8,7 @@ import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class CommandBase extends HystrixCommand<String> {
+public abstract class CommandBase<T> extends HystrixCommand<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendUserBetsCommand.class);
     private final ServiceResolverService resolverService;

@@ -13,7 +13,7 @@ import hu.bets.services.Services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RetrieveFriendsCommand extends CommandBase {
+public class RetrieveFriendsCommand extends CommandBase<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendUserBetsCommand.class);
     private static final String USER_FRIENDS_PATH = "/users/football/v1/friends/%s";

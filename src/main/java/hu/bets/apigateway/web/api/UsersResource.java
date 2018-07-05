@@ -5,7 +5,7 @@ import hu.bets.apigateway.model.users.User;
 import hu.bets.apigateway.service.users.UsersService;
 import hu.bets.apigateway.web.model.users.GetFriendsPayload;
 import hu.bets.apigateway.web.model.users.PayloadWithToken;
-import hu.bets.apigateway.web.model.users.UsersResponse;
+import hu.bets.apigateway.web.model.users.Response;
 import hu.bets.common.util.json.Json;
 import hu.bets.common.util.json.JsonParsingException;
 import org.slf4j.Logger;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("aggregator/v1/users")
@@ -33,7 +32,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response register(String payload) {
+    public javax.ws.rs.core.Response register(String payload) {
         LOGGER.info("Register endpoint called with payload: {}", payload);
         try {
             User user = JSON.fromJson(payload, User.class);
@@ -42,15 +41,23 @@ public class UsersResource {
             usersService.registerUse(user);
             LOGGER.info("User successfully registered.");
 
-            return Response.ok()
-                    .entity(JSON.toJson(UsersResponse.success("Successfully registered user.", "empty_token")))
+            return javax.ws.rs.core.Response.ok()
+                    .entity(JSON.toJson(Response.success("Successfully registered user.", "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
-            return Response.status(400).entity("Invalid JSON request received").build();
+            return javax.ws.rs.core.Response.status(400)
+                    .entity("Invalid JSON request received")
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
+                    .build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while registering user. ", e);
-            return Response.serverError()
-                    .entity(JSON.toJson(UsersResponse.failure("Unable to register user.", "empty_token")))
+            return javax.ws.rs.core.Response.serverError()
+                    .entity(JSON.toJson(Response.failure("Unable to register user.", "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
     }
@@ -59,7 +66,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response updateFriends(String payload) {
+    public javax.ws.rs.core.Response updateFriends(String payload) {
         LOGGER.info("Update friends endpoint called with payload: {}", payload);
         try {
             FriendsUpdate friendsUpdate = JSON.fromJson(payload, FriendsUpdate.class);
@@ -69,15 +76,23 @@ public class UsersResource {
             List<User> newList = checkResponse(response);
             LOGGER.info("User list successfully modified. Resulting list is: {}", newList);
 
-            return Response.ok()
-                    .entity(JSON.toJson(UsersResponse.success(newList, "empty_token")))
+            return javax.ws.rs.core.Response.ok()
+                    .entity(JSON.toJson(Response.success(newList, "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
-            return Response.status(400).entity("Invalid JSON request received").build();
+            return javax.ws.rs.core.Response.status(400)
+                    .entity("Invalid JSON request received")
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
+                    .build();
         }  catch (Exception e) {
             LOGGER.error("Exception caught while updating user list. ", e);
-            return Response.serverError()
-                    .entity(JSON.toJson(UsersResponse.failure("Unable to register user. " + e.getMessage(), "empty_token")))
+            return javax.ws.rs.core.Response.serverError()
+                    .entity(JSON.toJson(Response.failure("Unable to register user. " + e.getMessage(), "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
     }
@@ -86,7 +101,7 @@ public class UsersResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @POST
-    public Response getFriends(@PathParam("userId") String userId, String payload) {
+    public javax.ws.rs.core.Response getFriends(@PathParam("userId") String userId, String payload) {
         LOGGER.info("Get friends endpoint called with payload: {}", payload);
         try {
             GetFriendsPayload getFriendsPayload = JSON.fromJson(payload, GetFriendsPayload.class);
@@ -96,13 +111,23 @@ public class UsersResource {
             List<User> newList = checkResponse(response);
             LOGGER.info("User list successfully retrieved. Resulting list is: {}", newList);
 
-            return Response.ok().entity(JSON.toJson(UsersResponse.success(newList, "empty_token"))).build();
+            return javax.ws.rs.core.Response.ok()
+                    .entity(JSON.toJson(Response.success(newList, "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
+                    .build();
         } catch (JsonParsingException e) {
-            return Response.status(400).entity("Invalid JSON request received").build();
+            return javax.ws.rs.core.Response.status(400)
+                    .entity("Invalid JSON request received")
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
+                    .build();
         }  catch (Exception e) {
             LOGGER.error("Exception caught while retrieving user list. ", e);
-            return Response.serverError()
-                    .entity(JSON.toJson(UsersResponse.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
+            return javax.ws.rs.core.Response.serverError()
+                    .entity(JSON.toJson(Response.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
+                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
     }

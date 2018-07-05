@@ -26,4 +26,5 @@ public class DefaultUsersService implements UsersService {
     public void registerUse(User user) {
         commandFacade.getUserRegisterCommand(user).execute();
     }
+
 }
