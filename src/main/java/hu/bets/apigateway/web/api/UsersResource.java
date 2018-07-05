@@ -43,20 +43,20 @@ public class UsersResource {
 
             return javax.ws.rs.core.Response.ok()
                     .entity(JSON.toJson(Response.success("Successfully registered user.", "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
             return javax.ws.rs.core.Response.status(400)
                     .entity("Invalid JSON request received")
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (Exception e) {
             LOGGER.error("Exception caught while registering user. ", e);
             return javax.ws.rs.core.Response.serverError()
                     .entity(JSON.toJson(Response.failure("Unable to register user.", "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
@@ -78,20 +78,20 @@ public class UsersResource {
 
             return javax.ws.rs.core.Response.ok()
                     .entity(JSON.toJson(Response.success(newList, "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
             return javax.ws.rs.core.Response.status(400)
                     .entity("Invalid JSON request received")
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }  catch (Exception e) {
             LOGGER.error("Exception caught while updating user list. ", e);
             return javax.ws.rs.core.Response.serverError()
                     .entity(JSON.toJson(Response.failure("Unable to register user. " + e.getMessage(), "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
@@ -113,20 +113,20 @@ public class UsersResource {
 
             return javax.ws.rs.core.Response.ok()
                     .entity(JSON.toJson(Response.success(newList, "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         } catch (JsonParsingException e) {
             return javax.ws.rs.core.Response.status(400)
                     .entity("Invalid JSON request received")
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }  catch (Exception e) {
             LOGGER.error("Exception caught while retrieving user list. ", e);
             return javax.ws.rs.core.Response.serverError()
                     .entity(JSON.toJson(Response.failure("Unable to retrieve user list. " + e.getMessage(), "empty_token")))
-                    .header("Access-Control-Allow-Origin", "http://toptipr.com")
+                    .header("Access-Control-Allow-Origin", "http://www.toptipr.com")
                     .header("Access-Control-Allow-Origin", "https://football-frontend.herokuapp.com")
                     .build();
         }
