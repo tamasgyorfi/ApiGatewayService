@@ -31,7 +31,6 @@ public class ToplistCommand extends CommandBase<Toplist> {
     protected Toplist run() {
         List<User> friends = JSON.fromJson(new RetrieveFriendsCommand(resolverService, userId).execute(), Friends.class).friends;
         List<String> userIds = friends.stream().map(User::getId).collect(Collectors.toList());
-        userIds.add(userId);
 
         List<ToplistEntry> entries = JSON.fromJson(new UserScoresCommand(resolverService, userIds).execute(), Entries.class).entries;
 
